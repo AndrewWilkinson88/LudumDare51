@@ -36,9 +36,11 @@ func getState():
 	return curState
 	
 func setState(cellState):
+	if(curState == cellState):
+		return false
 	curState = cellState
 	setOverlay(curState)
-	pass
+	return true
 
 func setOverlay(cellState ):
 	if(cellState == CELL_STATE.UNDEFINED):
