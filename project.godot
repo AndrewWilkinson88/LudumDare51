@@ -17,7 +17,7 @@ _global_script_classes=[ {
 "base": "Node2D",
 "class": "PicrossPuzzle",
 "language": "GDScript",
-"path": "res://picross/picross.gd"
+"path": "res://picross/PicrossPuzzle.gd"
 } ]
 _global_script_class_icons={
 "PicrossCell": "",

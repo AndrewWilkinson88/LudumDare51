@@ -12,11 +12,7 @@ var curState = CELL_STATE.UNDEFINED
 
 enum CELL_STATE {UNDEFINED, YES, NO}
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
-
-func setup(cellTexture, yesTexture, noTexture):
+func _init(cellTexture, yesTexture, noTexture):
 	_cellTexture = cellTexture
 	_yesTexture = yesTexture
 	_noTexture = noTexture

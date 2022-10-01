@@ -2,6 +2,8 @@ extends Node2D
 
 class_name PicrossPuzzle
 
+signal complete_puzzle
+
 var THRESHOLD : float = .1
 var UI_OFFSET : int = 120
 
@@ -33,10 +35,9 @@ var columnLabels
 var rowLabels
 
 # Called when the node enters the scene tree for the first time.
-func _ready():
-	self.scale.x = 1
-	self.scale.y = 1
-	font = DynamicFont.new()	
+func _init(puzzleImageResourceLocation):
+	#connect("complete_puzzle", self, "_test_signal_handler")	
+	font = DynamicFont.new()
 	font.font_data = load("res://fonts/rainyhearts.ttf")
 	font.size = 32
 	font.extra_spacing_bottom = -3
@@ -44,17 +45,12 @@ func _ready():
 	cellTexture  = load("res://picross/cell.png")
 	yesTexture  = load("res://picross/picrosspositive.png")
 	noTexture  = load("res://picross/x.png")
-	
-	createPicrossPuzzle("res://picross/smiley.png")
+	createPicrossPuzzle(puzzleImageResourceLocation)
 	pass # Replace with function body.
 	
 #Load and setup a picross puzzle by name
-func createPicrossPuzzle(imageName):
-	curPuzzleTexture = load(imageName)
-	var sprite = Sprite.new()
-	sprite.texture = curPuzzleTexture
-	sprite.position.x = 10
-	sprite.position.y = 10
+func createPicrossPuzzle(puzzleImageResourceLocation):
+	curPuzzleTexture = load(puzzleImageResourceLocation)
 	
 	var image : Image = curPuzzleTexture.get_data()
 	puzzleWidth = image.get_width()
@@ -122,9 +118,8 @@ func _generateGamefield():
 	for x in puzzleWidth:
 		picrossField.append([])
 		for y in puzzleHeight:
-			var cell = PicrossCell.new()
+			var cell = PicrossCell.new(cellTexture, yesTexture, noTexture)
 			picrossField[x].append(cell)
-			cell.setup(cellTexture, yesTexture, noTexture)
 			cell.position.x = x * cellTexture.get_width()
 			cell.position.y = y * cellTexture.get_height()
 			gamefield.add_child(cell)
@@ -262,7 +257,10 @@ func _checkFullCorrectness():
 		if !r:
 			return false
 	return true
-	
+
+#func _test_signal_handler():
+#	print("you win!")
+
 func _win():
-	print("you win!")
+	emit_signal("complete_puzzle")
 	pass
