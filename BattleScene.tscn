@@ -1,0 +1,172 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://fonts/Xolonium-Regular.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://Monster.tscn" type="PackedScene" id=2]
+[ext_resource path="res://BattleScene.gd" type="Script" id=3]
+
+[sub_resource type="DynamicFont" id=1]
+size = 32
+font_data = ExtResource( 1 )
+
+[node name="BattleScene" type="Node"]
+script = ExtResource( 3 )
+monster_scene = ExtResource( 2 )
+
+[node name="PlayerSide" type="PanelContainer" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -512.0
+
+[node name="PlayerBG" type="ColorRect" parent="PlayerSide"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 505.0
+margin_bottom = 593.0
+color = Color( 0.705882, 0.698039, 0.698039, 1 )
+
+[node name="PlayerMargins" type="MarginContainer" parent="PlayerSide"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 505.0
+margin_bottom = 593.0
+custom_constants/margin_right = 20
+custom_constants/margin_top = 20
+custom_constants/margin_left = 20
+custom_constants/margin_bottom = 20
+
+[node name="PlayerLayout" type="GridContainer" parent="PlayerSide/PlayerMargins"]
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 478.0
+margin_bottom = 566.0
+custom_constants/vseparation = 10
+custom_constants/hseparation = 10
+
+[node name="PlayerHealth" type="Label" parent="PlayerSide/PlayerMargins/PlayerLayout"]
+margin_right = 458.0
+margin_bottom = 39.0
+custom_fonts/font = SubResource( 1 )
+text = "100"
+align = 1
+valign = 1
+
+[node name="PicrossContainer" type="ColorRect" parent="PlayerSide/PlayerMargins/PlayerLayout"]
+margin_top = 49.0
+margin_right = 458.0
+margin_bottom = 491.0
+size_flags_vertical = 3
+color = Color( 0.45098, 0.611765, 1, 1 )
+
+[node name="Card Container" type="HBoxContainer" parent="PlayerSide/PlayerMargins/PlayerLayout"]
+margin_top = 501.0
+margin_right = 458.0
+margin_bottom = 546.0
+size_flags_horizontal = 3
+custom_constants/separation = 20
+alignment = 1
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="FireButton" type="Button" parent="PlayerSide/PlayerMargins/PlayerLayout/Card Container"]
+margin_right = 99.0
+margin_bottom = 45.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 1 )
+text = "Fire"
+
+[node name="IceButton" type="Button" parent="PlayerSide/PlayerMargins/PlayerLayout/Card Container"]
+margin_left = 119.0
+margin_right = 219.0
+margin_bottom = 45.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 1 )
+text = "Ice"
+
+[node name="AirButton" type="Button" parent="PlayerSide/PlayerMargins/PlayerLayout/Card Container"]
+margin_left = 239.0
+margin_right = 338.0
+margin_bottom = 45.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 1 )
+text = "Elec"
+
+[node name="LightButton" type="Button" parent="PlayerSide/PlayerMargins/PlayerLayout/Card Container"]
+margin_left = 358.0
+margin_right = 458.0
+margin_bottom = 45.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 1 )
+text = "Light"
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+anchor_bottom = 1.0
+margin_right = 512.0
+
+[node name="MonsterBG" type="ColorRect" parent="PanelContainer"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 505.0
+margin_bottom = 593.0
+color = Color( 0.368627, 0.32549, 0.32549, 1 )
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 505.0
+margin_bottom = 593.0
+custom_constants/margin_right = 20
+custom_constants/margin_top = 20
+custom_constants/margin_left = 20
+custom_constants/margin_bottom = 20
+
+[node name="GridContainer" type="GridContainer" parent="PanelContainer/MarginContainer"]
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 478.0
+margin_bottom = 566.0
+custom_constants/vseparation = 20
+custom_constants/hseparation = 20
+
+[node name="MonsterName" type="HBoxContainer" parent="PanelContainer/MarginContainer/GridContainer"]
+margin_right = 458.0
+margin_bottom = 39.0
+size_flags_horizontal = 3
+custom_constants/separation = 20
+alignment = 1
+
+[node name="MonsterName" type="Label" parent="PanelContainer/MarginContainer/GridContainer/MonsterName"]
+margin_left = 93.0
+margin_right = 275.0
+margin_bottom = 39.0
+custom_fonts/font = SubResource( 1 )
+text = "Orc Soldier"
+
+[node name="MonsterHealth" type="Label" parent="PanelContainer/MarginContainer/GridContainer/MonsterName"]
+margin_left = 295.0
+margin_right = 364.0
+margin_bottom = 39.0
+custom_fonts/font = SubResource( 1 )
+text = "100"
+
+[node name="SpriteContainer" type="CenterContainer" parent="PanelContainer/MarginContainer/GridContainer"]
+margin_top = 59.0
+margin_right = 458.0
+margin_bottom = 526.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MonsterActions" type="HBoxContainer" parent="PanelContainer/MarginContainer/GridContainer"]
+margin_top = 546.0
+margin_right = 458.0
+margin_bottom = 546.0
+alignment = 1
+__meta__ = {
+"_edit_group_": true
+}
+
+[connection signal="pressed" from="PlayerSide/PlayerMargins/PlayerLayout/Card Container/FireButton" to="." method="_on_fire_complete"]
+[connection signal="pressed" from="PlayerSide/PlayerMargins/PlayerLayout/Card Container/IceButton" to="." method="_on_ice_complete"]
+[connection signal="pressed" from="PlayerSide/PlayerMargins/PlayerLayout/Card Container/AirButton" to="." method="_on_air_complete"]
+[connection signal="pressed" from="PlayerSide/PlayerMargins/PlayerLayout/Card Container/LightButton" to="." method="_on_light_complete"]
