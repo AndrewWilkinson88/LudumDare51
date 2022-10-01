@@ -12,7 +12,7 @@ _global_script_classes=[ {
 "base": "Node2D",
 "class": "PicrossCell",
 "language": "GDScript",
-"path": "res://PicrossCell.gd"
+"path": "res://picross/PicrossCell.gd"
 }, {
 "base": "Node2D",
 "class": "PicrossPuzzle",
