@@ -35,7 +35,8 @@ var columnLabels
 var rowLabels
 
 # Called when the node enters the scene tree for the first time.
-func _init(puzzleImageResourceLocation):
+func _init(puzzleTexture):
+	curPuzzleTexture = puzzleTexture
 	#connect("complete_puzzle", self, "_test_signal_handler")	
 	font = DynamicFont.new()
 	font.font_data = load("res://fonts/rainyhearts.ttf")
@@ -45,13 +46,11 @@ func _init(puzzleImageResourceLocation):
 	cellTexture  = load("res://picross/cell.png")
 	yesTexture  = load("res://picross/picrosspositive.png")
 	noTexture  = load("res://picross/x.png")
-	createPicrossPuzzle(puzzleImageResourceLocation)
+	createPicrossPuzzle()
 	pass # Replace with function body.
 	
 #Load and setup a picross puzzle by name
-func createPicrossPuzzle(puzzleImageResourceLocation):
-	curPuzzleTexture = load(puzzleImageResourceLocation)
-	
+func createPicrossPuzzle():
 	var image : Image = curPuzzleTexture.get_data()
 	puzzleWidth = image.get_width()
 	puzzleHeight = image.get_height()

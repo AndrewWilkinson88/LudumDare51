@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/bigsmiley.png-8966dd87474e732b6d9c1e48e6c97e76.stex"
+path="res://.import/frame_title_sci-fi.png-f11cf0b7f4a393fe8b648fac759abe89.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://picross/bigsmiley.png"
-dest_files=[ "res://.import/bigsmiley.png-8966dd87474e732b6d9c1e48e6c97e76.stex" ]
+source_file="res://cards/cardArt/frame_title_sci-fi.png"
+dest_files=[ "res://.import/frame_title_sci-fi.png-f11cf0b7f4a393fe8b648fac759abe89.stex" ]
 
 [params]
 

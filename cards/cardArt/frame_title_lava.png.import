@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/face2.png-ece73930c8153663485181a9b765c888.stex"
+path="res://.import/frame_title_lava.png-31b227f80470d04c86de3737ac2f64fa.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://picross/face2.png"
-dest_files=[ "res://.import/face2.png-ece73930c8153663485181a9b765c888.stex" ]
+source_file="res://cards/cardArt/frame_title_lava.png"
+dest_files=[ "res://.import/frame_title_lava.png-31b227f80470d04c86de3737ac2f64fa.stex" ]
 
 [params]
 

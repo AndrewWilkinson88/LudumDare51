@@ -9,6 +9,26 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "CardDef",
+"class": "AttackCardDef",
+"language": "GDScript",
+"path": "res://cards/AttackCardDef.gd"
+}, {
+"base": "Node",
+"class": "BattleScene",
+"language": "GDScript",
+"path": "res://BattleScene.gd"
+}, {
+"base": "Resource",
+"class": "CardDef",
+"language": "GDScript",
+"path": "res://cards/CardDef.gd"
+}, {
+"base": "Node2D",
+"class": "Deck",
+"language": "GDScript",
+"path": "res://cards/Deck.gd"
+}, {
 "base": "Node2D",
 "class": "PicrossCell",
 "language": "GDScript",
@@ -20,6 +40,10 @@ _global_script_classes=[ {
 "path": "res://picross/PicrossPuzzle.gd"
 } ]
 _global_script_class_icons={
+"AttackCardDef": "",
+"BattleScene": "",
+"CardDef": "",
+"Deck": "",
 "PicrossCell": "",
 "PicrossPuzzle": ""
 }
@@ -27,7 +51,6 @@ _global_script_class_icons={
 [application]
 
 config/name="LudumDare51"
-run/main_scene="res://picross/picross.tscn"
 run/main_scene="res://BattleScene.tscn"
 config/icon="res://icon.png"
 
