@@ -227,7 +227,6 @@ func _input(event):
 	pass
 
 func _checkCorrectness(x, y):
-	print("Checking correctness")
 	var prevColumnCorrectness = columnCorrectness[x]
 	columnCorrectness[x] = _checkColumnCorrectness(x)
 	var prevRowCorrectness = rowCorrectness[y]

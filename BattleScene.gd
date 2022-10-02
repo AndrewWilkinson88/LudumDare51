@@ -51,7 +51,16 @@ func _ready():
 	for i in 3:
 		player_hand_container.addCard(playerDeck.draw(), self)
 	
-	pass # Replace with function body.
+	var timer = Timer.new()
+	add_child(timer)
+	timer.set_wait_time( 10 )
+	timer.connect("timeout",self,"_tryDrawCard") 
+	timer.start()
+	pass 
+
+func _tryDrawCard():
+	if player_hand_container.cardCount() < 5:
+		player_hand_container.addCard(playerDeck.draw(), self)
 
 func _generateDefaultPlayerDeck():
 	var basicAir = load("res://cards/cardObjects/basic_air_attack.tres")
@@ -63,7 +72,6 @@ func _generateDefaultPlayerDeck():
 		playerDeckDef.addCard(basicFire)
 		playerDeckDef.addCard(basicIce)
 	playerDeck = DeckInstance.new(playerDeckDef)
-	
 
 func _process(delta):
 	monster_health_text.text = str(current_monster.remaining_health)
@@ -110,5 +118,11 @@ func _on_card_clicked(card):
 func _on_picross_complete():
 	if cur_card.getCardDef() is AttackCardDef:
 		emit_signal("player_attack", cur_card.getCardDef().attackType,  cur_card.getCardDef().damage)
+	picross_container.remove_child( cur_card.getPuzzle())
+	cur_card.getPuzzle().disconnect("complete_puzzle", self, "_on_picross_complete")
+	player_hand_container.removeCard(cur_card, self);
+	playerDeck.discard(cur_card.getCardDef())
+	cur_card = null
+	
 	pass
 
