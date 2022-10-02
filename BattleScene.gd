@@ -14,7 +14,8 @@ var sprite_container
 var player_health_text
 var monster_health_text
 var monster_actions
-var monster_init
+#var monster_init
+var monster_name
 
 var picross_container
 var cur_card
@@ -35,17 +36,19 @@ func init(playerDeckDef, playerHealth, encounter):
 	monster_actions = $PanelContainer/MarginContainer/GridContainer/MonsterActions
 	picross_container = $PlayerSide/PlayerMargins/PlayerLayout/PicrossContainer
 	player_hand_container = $PlayerSide/PlayerMargins/PlayerLayout/PlayerHandContainer
+	monster_name = $PanelContainer/MarginContainer/GridContainer/MonsterName/MonsterName
 	current_monster = monster_scene.instance()
 	
 	sprite_container.add_child(current_monster)
 	var sprite_rect = sprite_container.get_rect()
-	current_monster.position.x = sprite_container.rect_position.x + sprite_rect.size.x / 2
-	current_monster.position.y = sprite_container.rect_position.y + sprite_rect.size.y / 2
 	self.connect("player_attack", current_monster, "take_damage")
 	current_monster.connect("monster_attack", self, "player_take_damage")
 	current_monster.connect("monster_queue_change", self, "update_monster_queue")
 	current_monster.connect("monster_death", self, "_onMonsterDeath")
 	current_monster.init(encounter)
+	monster_name.text = encounter.encounterName
+	current_monster.position.x = sprite_container.rect_position.x + sprite_rect.size.x / 2
+	current_monster.position.y = sprite_container.rect_position.y + sprite_rect.size.y / 2
 	
 	#TODO get players actual current deck
 	playerDeck = DeckInstance.new(playerDeckDef)

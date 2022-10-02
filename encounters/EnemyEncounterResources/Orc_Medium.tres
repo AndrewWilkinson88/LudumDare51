@@ -6,8 +6,8 @@
 [resource]
 script = ExtResource( 1 )
 encounterName = "Orc Warlord"
-health = 100
-attack = 30
-levels = [ 4 ]
+health = 50
+attack = 15
+levels = [ 2, 3 ]
 enemy = ExtResource( 2 )
 allowed_weaknesses = [ 0, 3 ]

@@ -6,8 +6,8 @@
 [resource]
 script = ExtResource( 1 )
 encounterName = "Boss Slime"
-health = 500
-attack = 8
+health = 200
+attack = 12
 levels = [ 4 ]
 enemy = ExtResource( 2 )
 allowed_weaknesses = [ 2, 1, 0, 3 ]

@@ -20,31 +20,22 @@ var current_weakness_type
 
 var monsterName:String
 var weaknessPool:Array
+var enemy_sprite;
 
 func init(encounterDef:Encounter):
+	
+	action_counter = 0
+	
 	monsterName = encounterDef.encounterName
 	remaining_health = encounterDef.health
 	current_attack_damage = encounterDef.attack
 	weaknessPool = []
 	for weakness in encounterDef.allowed_weaknesses:
 		weaknessPool.append(weakness)
-	
-#	export(String) var encounterName
-#export(int) var health
-#export(int) var attack
-##Levels this enemy can appear on
-#export(Array,int) var levels
-#export(Texture) var enemy
-#export(Array,WEAKNESS_TYPE) var allowed_weaknesses
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	remaining_health = 100
-	current_attack_damage = 5
-	action_counter = 0
+	texture = encounterDef.enemy
 	current_action = action_type.ACTION_IDLE
 	current_attack_type = attack_type.ATTACK_PHYSICAL
-	current_weakness_type = weakness_type.WEAKNESS_LIGHT
+	current_weakness_type = weaknessPool[randi() % weaknessPool.size()]
 	
 	$MonsterActionTimer.start()
 	action_queue.push_back(action_type.ACTION_IDLE)
@@ -54,7 +45,6 @@ func _ready():
 	action_queue.push_back(action_type.ACTION_ATTACK)
 	action_queue.push_back(action_type.ACTION_POWERUP)
 	emit_signal("monster_queue_change", action_queue)
-	pass
 	
 func _process(delta):
 	$ProgressBar.value = 10 - $MonsterActionTimer.time_left

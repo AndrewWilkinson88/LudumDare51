@@ -234,6 +234,8 @@ func _input(event):
 			changed = picrossField[x][y].setState(PicrossCell.CELL_STATE.NO)
 		if changed:
 			_checkCorrectness(x, y)
+	if event is InputEventKey and event.pressed and event.scancode == KEY_SPACE:
+		_win()
 	pass
 
 func _checkCorrectness(x, y):
