@@ -1,0 +1,25 @@
+[gd_resource type="Resource" load_steps=14 format=2]
+
+[ext_resource path="res://cards/AttackCardDef.gd" type="Script" id=1]
+[ext_resource path="res://cards/cardArt/frame_title_ice.png" type="Texture" id=2]
+[ext_resource path="res://cards/cardArt/ice/iceattack4.png" type="Texture" id=3]
+[ext_resource path="res://picross/Water/water_3.png" type="Texture" id=4]
+[ext_resource path="res://picross/Water/water_7.png" type="Texture" id=5]
+[ext_resource path="res://picross/Water/water_8.png" type="Texture" id=6]
+[ext_resource path="res://picross/Water/water_6.png" type="Texture" id=7]
+[ext_resource path="res://picross/Water/water_9.png" type="Texture" id=8]
+[ext_resource path="res://picross/Water/water_2.png" type="Texture" id=9]
+[ext_resource path="res://picross/Water/water_1.png" type="Texture" id=10]
+[ext_resource path="res://picross/Water/water_10.png" type="Texture" id=11]
+[ext_resource path="res://picross/Water/water_4.png" type="Texture" id=12]
+[ext_resource path="res://picross/Water/water_5.png" type="Texture" id=13]
+
+[resource]
+script = ExtResource( 1 )
+cardName = "Ice Attack"
+cardDescription = "Blasts your enemy with freezing ice"
+picrossPool = [ ExtResource( 10 ), ExtResource( 9 ), ExtResource( 4 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 7 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 8 ), ExtResource( 11 ) ]
+borderArt = ExtResource( 2 )
+cardArt = ExtResource( 3 )
+damage = 10
+attackType = 2

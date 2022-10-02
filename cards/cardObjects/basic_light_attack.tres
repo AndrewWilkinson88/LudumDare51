@@ -1,0 +1,23 @@
+[gd_resource type="Resource" load_steps=12 format=2]
+
+[ext_resource path="res://cards/AttackCardDef.gd" type="Script" id=1]
+[ext_resource path="res://picross/LIght/light_3.png" type="Texture" id=2]
+[ext_resource path="res://cards/cardArt/frame_title_sci-fi.png" type="Texture" id=3]
+[ext_resource path="res://picross/LIght/light_1.png" type="Texture" id=4]
+[ext_resource path="res://picross/LIght/light_2.png" type="Texture" id=5]
+[ext_resource path="res://cards/cardArt/physical/fightingstance2.png" type="Texture" id=6]
+[ext_resource path="res://picross/LIght/light_4.png" type="Texture" id=7]
+[ext_resource path="res://picross/LIght/light_8.png" type="Texture" id=8]
+[ext_resource path="res://picross/LIght/light_7.png" type="Texture" id=9]
+[ext_resource path="res://picross/LIght/light_6.png" type="Texture" id=10]
+[ext_resource path="res://picross/LIght/light_5.png" type="Texture" id=11]
+
+[resource]
+script = ExtResource( 1 )
+cardName = "Light Attack"
+cardDescription = "Light rains down from above"
+picrossPool = [ ExtResource( 4 ), ExtResource( 5 ), ExtResource( 2 ), ExtResource( 7 ), ExtResource( 11 ), ExtResource( 10 ), ExtResource( 9 ), ExtResource( 8 ) ]
+borderArt = ExtResource( 3 )
+cardArt = ExtResource( 6 )
+damage = 10
+attackType = 3

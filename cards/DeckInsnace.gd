@@ -30,7 +30,7 @@ func draw():
 		if _discard.size() != 0:
 			_curShuffle += _discard
 			_discard = []
-			shuffleDeck()	
+			shuffleDeck()
 	var ret = _curShuffle[0]
 	_curShuffle.remove(0)
 	return ret
