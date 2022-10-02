@@ -20,6 +20,9 @@ var picross_container
 var cur_card
 var player_hand_container
 
+var playerDeckDef
+var playerDeck
+
 signal player_attack
 
 # Called when the node enters the scene tree for the first time.
@@ -42,17 +45,25 @@ func _ready():
 	current_monster.connect("monster_queue_change", self, "update_monster_queue")
 	current_monster.init_monster()
 	
-	player_hand = []
-	var card;
-	card = Card.new(load("res://cards/cardObjects/basic_air_attack.tres"))	
-	player_hand_container.add_child(card)
-	card.connect("play_card", self ,"_on_card_clicked")
-	player_hand.append(card)
+	#TODO get players actual current deck
+	_generateDefaultPlayerDeck()
 	
-	player_hand.append(Card.new(load("res://cards/cardObjects/basic_fire_attack.tres")))
-	player_hand.append(Card.new(load("res://cards/cardObjects/basic_ice_attack.tres")))
-	player_hand.append(Card.new(load("res://cards/cardObjects/basic_physical_attack.tres")))
+	for i in 3:
+		player_hand_container.addCard(playerDeck.draw(), self)
+	
 	pass # Replace with function body.
+
+func _generateDefaultPlayerDeck():
+	var basicAir = load("res://cards/cardObjects/basic_air_attack.tres")
+	var basicFire = load("res://cards/cardObjects/basic_fire_attack.tres")
+	var basicIce = load("res://cards/cardObjects/basic_ice_attack.tres")
+	playerDeckDef = DeckDef.new()
+	for i in 4:
+		playerDeckDef.addCard(basicAir)
+		playerDeckDef.addCard(basicFire)
+		playerDeckDef.addCard(basicIce)
+	playerDeck = DeckInstance.new(playerDeckDef)
+	
 
 func _process(delta):
 	monster_health_text.text = str(current_monster.remaining_health)
@@ -101,19 +112,3 @@ func _on_picross_complete():
 		emit_signal("player_attack", cur_card.getCardDef().attackType,  cur_card.getCardDef().damage)
 	pass
 
-#func _on_fire_complete():
-#	emit_signal("player_attack", attack_type.ATTACK_FIRE, 10)
-#	pass
-#
-#func _on_ice_complete():
-#	emit_signal("player_attack", attack_type.ATTACK_ICE, 10)
-#	pass
-#
-#func _on_air_complete():
-#	emit_signal("player_attack", attack_type.ATTACK_AIR, 10)
-#	pass
-#
-#func _on_light_complete():
-#	emit_signal("player_attack", attack_type.ATTACK_PHYSICAL, 10)
-#	pass
-	

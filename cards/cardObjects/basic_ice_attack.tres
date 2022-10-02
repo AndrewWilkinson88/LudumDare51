@@ -1,7 +1,7 @@
 [gd_resource type="Resource" load_steps=6 format=2]
 
 [ext_resource path="res://picross/smiley.png" type="Texture" id=1]
-[ext_resource path="res://picross/turtle.png" type="Texture" id=2]
+[ext_resource path="res://picross/camel.png" type="Texture" id=2]
 [ext_resource path="res://cards/AttackCardDef.gd" type="Script" id=3]
 [ext_resource path="res://cards/cardArt/ice/iceattack4.png" type="Texture" id=4]
 [ext_resource path="res://cards/cardArt/frame_title_ice.png" type="Texture" id=5]
