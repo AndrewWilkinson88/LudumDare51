@@ -58,7 +58,7 @@ margin_bottom = 491.0
 size_flags_vertical = 3
 color = Color( 0.45098, 0.611765, 1, 1 )
 
-[node name="Card Container" type="HBoxContainer" parent="PlayerSide/PlayerMargins/PlayerLayout"]
+[node name="PlayerHandContainer" type="HBoxContainer" parent="PlayerSide/PlayerMargins/PlayerLayout"]
 margin_top = 501.0
 margin_right = 458.0
 margin_bottom = 546.0
@@ -69,14 +69,14 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="FireButton" type="Button" parent="PlayerSide/PlayerMargins/PlayerLayout/Card Container"]
+[node name="FireButton" type="Button" parent="PlayerSide/PlayerMargins/PlayerLayout/PlayerHandContainer"]
 margin_right = 99.0
 margin_bottom = 45.0
 size_flags_horizontal = 3
 custom_fonts/font = SubResource( 1 )
 text = "Fire"
 
-[node name="IceButton" type="Button" parent="PlayerSide/PlayerMargins/PlayerLayout/Card Container"]
+[node name="IceButton" type="Button" parent="PlayerSide/PlayerMargins/PlayerLayout/PlayerHandContainer"]
 margin_left = 119.0
 margin_right = 219.0
 margin_bottom = 45.0
@@ -84,7 +84,7 @@ size_flags_horizontal = 3
 custom_fonts/font = SubResource( 1 )
 text = "Ice"
 
-[node name="AirButton" type="Button" parent="PlayerSide/PlayerMargins/PlayerLayout/Card Container"]
+[node name="AirButton" type="Button" parent="PlayerSide/PlayerMargins/PlayerLayout/PlayerHandContainer"]
 margin_left = 239.0
 margin_right = 338.0
 margin_bottom = 45.0
@@ -92,7 +92,7 @@ size_flags_horizontal = 3
 custom_fonts/font = SubResource( 1 )
 text = "Elec"
 
-[node name="LightButton" type="Button" parent="PlayerSide/PlayerMargins/PlayerLayout/Card Container"]
+[node name="LightButton" type="Button" parent="PlayerSide/PlayerMargins/PlayerLayout/PlayerHandContainer"]
 margin_left = 358.0
 margin_right = 458.0
 margin_bottom = 45.0
@@ -166,7 +166,7 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[connection signal="pressed" from="PlayerSide/PlayerMargins/PlayerLayout/Card Container/FireButton" to="." method="_on_fire_complete"]
-[connection signal="pressed" from="PlayerSide/PlayerMargins/PlayerLayout/Card Container/IceButton" to="." method="_on_ice_complete"]
-[connection signal="pressed" from="PlayerSide/PlayerMargins/PlayerLayout/Card Container/AirButton" to="." method="_on_air_complete"]
-[connection signal="pressed" from="PlayerSide/PlayerMargins/PlayerLayout/Card Container/LightButton" to="." method="_on_light_complete"]
+[connection signal="pressed" from="PlayerSide/PlayerMargins/PlayerLayout/PlayerHandContainer/FireButton" to="." method="_on_fire_complete"]
+[connection signal="pressed" from="PlayerSide/PlayerMargins/PlayerLayout/PlayerHandContainer/IceButton" to="." method="_on_ice_complete"]
+[connection signal="pressed" from="PlayerSide/PlayerMargins/PlayerLayout/PlayerHandContainer/AirButton" to="." method="_on_air_complete"]
+[connection signal="pressed" from="PlayerSide/PlayerMargins/PlayerLayout/PlayerHandContainer/LightButton" to="." method="_on_light_complete"]

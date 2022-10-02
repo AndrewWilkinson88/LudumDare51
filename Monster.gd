@@ -51,6 +51,8 @@ func add_next_action(next_action):
 
 func take_damage(type, amount):
 	if( type == current_weakness_type):
+		remaining_health -= (amount * 2)
+	else:
 		remaining_health -= amount
 	pass
 

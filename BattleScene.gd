@@ -7,12 +7,18 @@ enum attack_type {ATTACK_FIRE, ATTACK_AIR, ATTACK_ICE, ATTACK_PHYSICAL}
 enum weakness_type {WEAKNESS_FIRE, WEAKNESS_AIR, WEAKNESS_ICE, WEAKNESS_LIGHT}
 
 var player_health
+var player_deck
+var player_hand
 var current_monster: Sprite
 var sprite_container
 var player_health_text
 var monster_health_text
 var monster_actions
 var monster_init
+
+var picross_container
+var cur_card
+var player_hand_container
 
 signal player_attack
 
@@ -23,6 +29,8 @@ func _ready():
 	monster_health_text = $PanelContainer/MarginContainer/GridContainer/MonsterName/MonsterHealth
 	player_health_text = $PlayerSide/PlayerMargins/PlayerLayout/PlayerHealth
 	monster_actions = $PanelContainer/MarginContainer/GridContainer/MonsterActions
+	picross_container = $PlayerSide/PlayerMargins/PlayerLayout/PicrossContainer
+	player_hand_container = $PlayerSide/PlayerMargins/PlayerLayout/PlayerHandContainer
 	current_monster = monster_scene.instance()
 	
 	sprite_container.add_child(current_monster)
@@ -33,6 +41,17 @@ func _ready():
 	current_monster.connect("monster_attack", self, "player_take_damage")
 	current_monster.connect("monster_queue_change", self, "update_monster_queue")
 	current_monster.init_monster()
+	
+	player_hand = []
+	var card;
+	card = Card.new(load("res://cards/cardObjects/basic_air_attack.tres"))	
+	player_hand_container.add_child(card)
+	card.connect("play_card", self ,"_on_card_clicked")
+	player_hand.append(card)
+	
+	player_hand.append(Card.new(load("res://cards/cardObjects/basic_fire_attack.tres")))
+	player_hand.append(Card.new(load("res://cards/cardObjects/basic_ice_attack.tres")))
+	player_hand.append(Card.new(load("res://cards/cardObjects/basic_physical_attack.tres")))
 	pass # Replace with function body.
 
 func _process(delta):
@@ -67,19 +86,34 @@ func update_monster_queue(action_queue):
 		monster_actions.add_child(label)
 	pass
 
-func _on_fire_complete():
-	emit_signal("player_attack", attack_type.ATTACK_FIRE, 10)
+func _on_card_clicked(card):
+	if cur_card != null :
+		var oldPuzzle = cur_card.getPuzzle()
+		picross_container.remove_child(oldPuzzle)
+		oldPuzzle.disconnect("complete_puzzle", self, "_on_picross_complete")
+	cur_card = card
+	var puzzle = card.getPuzzle()
+	picross_container.add_child(puzzle)
+	puzzle.connect("complete_puzzle", self, "_on_picross_complete")
+
+func _on_picross_complete():
+	if cur_card.getCardDef() is AttackCardDef:
+		emit_signal("player_attack", cur_card.getCardDef().attackType,  cur_card.getCardDef().damage)
 	pass
-	
-func _on_ice_complete():
-	emit_signal("player_attack", attack_type.ATTACK_ICE, 10)
-	pass
-	
-func _on_air_complete():
-	emit_signal("player_attack", attack_type.ATTACK_AIR, 10)
-	pass
-	
-func _on_light_complete():
-	emit_signal("player_attack", attack_type.ATTACK_PHYSICAL, 10)
-	pass
+
+#func _on_fire_complete():
+#	emit_signal("player_attack", attack_type.ATTACK_FIRE, 10)
+#	pass
+#
+#func _on_ice_complete():
+#	emit_signal("player_attack", attack_type.ATTACK_ICE, 10)
+#	pass
+#
+#func _on_air_complete():
+#	emit_signal("player_attack", attack_type.ATTACK_AIR, 10)
+#	pass
+#
+#func _on_light_complete():
+#	emit_signal("player_attack", attack_type.ATTACK_PHYSICAL, 10)
+#	pass
 	

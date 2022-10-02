@@ -1,13 +1,17 @@
-[gd_resource type="Resource" load_steps=4 format=2]
+[gd_resource type="Resource" load_steps=6 format=2]
 
 [ext_resource path="res://picross/smiley.png" type="Texture" id=1]
 [ext_resource path="res://picross/turtle.png" type="Texture" id=2]
 [ext_resource path="res://cards/AttackCardDef.gd" type="Script" id=3]
+[ext_resource path="res://cards/cardArt/frame_title_lava.png" type="Texture" id=4]
+[ext_resource path="res://cards/cardArt/fire/fire2.png" type="Texture" id=5]
 
 [resource]
 script = ExtResource( 3 )
-cardName = "Fire attack"
-cardDescription = "Scortches your enemies with searing fire"
+cardName = "Fire Attack"
+cardDescription = "A fireball shoots at your enemies"
+picrossPool = [ ExtResource( 1 ), ExtResource( 2 ) ]
+borderArt = ExtResource( 4 )
+cardArt = ExtResource( 5 )
 damage = 10
 attackType = 0
-picrossPool = [ ExtResource( 1 ), ExtResource( 2 ) ]
