@@ -3,9 +3,11 @@ signal monster_attack
 signal monster_spawn
 signal monster_queue_change
 
+signal monster_death
+
 enum action_type {ACTION_ATTACK, ACTION_IDLE, ACTION_POWERUP, ACTION_CHANGE_ATTACK, ACTION_CHANGE_WEAKNESS}
-enum attack_type {ATTACK_FIRE, ATTACK_AIR, ATTACK_ICE, ATTACK_PHYSICAL}
-enum weakness_type {WEAKNESS_FIRE, WEAKNESS_AIR, WEAKNESS_ICE, WEAKNESS_LIGHT}
+enum attack_type {ATTACK_FIRE, ATTACK_AIR, ATTACK_WATER, ATTACK_PHYSICAL}
+enum weakness_type {WEAKNESS_FIRE, WEAKNESS_WATER, WEAKNESS_ICE, WEAKNESS_LIGHT}
 
 var action_queue = []
 
@@ -16,6 +18,25 @@ var current_attack_type
 var current_attack_damage
 var current_weakness_type
 
+var monsterName:String
+var weaknessPool:Array
+
+func init(encounterDef:Encounter):
+	monsterName = encounterDef.encounterName
+	remaining_health = encounterDef.health
+	current_attack_damage = encounterDef.attack
+	weaknessPool = []
+	for weakness in encounterDef.allowed_weaknesses:
+		weaknessPool.append(weakness)
+	
+#	export(String) var encounterName
+#export(int) var health
+#export(int) var attack
+##Levels this enemy can appear on
+#export(Array,int) var levels
+#export(Texture) var enemy
+#export(Array,WEAKNESS_TYPE) var allowed_weaknesses
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	remaining_health = 100
@@ -24,9 +45,7 @@ func _ready():
 	current_action = action_type.ACTION_IDLE
 	current_attack_type = attack_type.ATTACK_PHYSICAL
 	current_weakness_type = weakness_type.WEAKNESS_LIGHT
-	pass # Replace with function body.
-
-func init_monster():
+	
 	$MonsterActionTimer.start()
 	action_queue.push_back(action_type.ACTION_IDLE)
 	action_queue.push_back(action_type.ACTION_ATTACK)
@@ -54,6 +73,9 @@ func take_damage(type, amount):
 		remaining_health -= (amount * 2)
 	else:
 		remaining_health -= amount
+		
+	if remaining_health <= 0:
+		emit_signal("monster_death")
 	pass
 
 func take_monster_action():

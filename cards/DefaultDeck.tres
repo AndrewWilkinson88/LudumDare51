@@ -1,0 +1,11 @@
+[gd_resource type="Resource" load_steps=6 format=2]
+
+[ext_resource path="res://cards/DeckDef.gd" type="Script" id=1]
+[ext_resource path="res://cards/cardObjects/basic_air_attack.tres" type="Resource" id=2]
+[ext_resource path="res://cards/cardObjects/basic_light_attack.tres" type="Resource" id=3]
+[ext_resource path="res://cards/cardObjects/basic_water_attack.tres" type="Resource" id=4]
+[ext_resource path="res://cards/cardObjects/basic_fire_attack.tres" type="Resource" id=5]
+
+[resource]
+script = ExtResource( 1 )
+cards = [ ExtResource( 2 ), ExtResource( 2 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 3 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 4 ) ]

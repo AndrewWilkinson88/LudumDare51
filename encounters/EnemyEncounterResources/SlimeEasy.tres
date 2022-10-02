@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://encounters/Encounter.gd" type="Script" id=1]
+[ext_resource path="res://Enemy/enemy_04a.png" type="Texture" id=2]
+
+[resource]
+script = ExtResource( 1 )
+encounterName = "Blue Slime"
+health = 30
+attack = 3
+levels = [ 0 ]
+enemy = ExtResource( 2 )
+allowed_weaknesses = [ 2 ]

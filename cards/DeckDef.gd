@@ -2,7 +2,7 @@ extends Resource
 
 class_name DeckDef
 
-var cards:Array
+export(Array, Resource) var cards
 
 func _init(cards = []):
 	cards = []

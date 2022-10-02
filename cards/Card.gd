@@ -46,7 +46,7 @@ func _init(cardDef):
 	title.text = cardDef.cardName
 	title.set_position(Vector2(-50,14))
 	add_child(title)
-	connect("pressed", self, "_button_pressed")
+	#connect("pressed", self, "_button_pressed")
 	
 	_picross = PicrossPuzzle.new(_pickedPicross)
 

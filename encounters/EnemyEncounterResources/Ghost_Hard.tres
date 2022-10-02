@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://encounters/Encounter.gd" type="Script" id=1]
+[ext_resource path="res://Enemy/enemy_01b.png" type="Texture" id=2]
+
+[resource]
+script = ExtResource( 1 )
+encounterName = "Litch"
+health = 100
+attack = 10
+levels = [ 2, 3 ]
+enemy = ExtResource( 2 )
+allowed_weaknesses = [ 3, 0 ]

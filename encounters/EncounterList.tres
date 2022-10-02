@@ -1,0 +1,19 @@
+[gd_resource type="Resource" load_steps=14 format=2]
+
+[ext_resource path="res://encounters/EncounterList.gd" type="Script" id=1]
+[ext_resource path="res://encounters/EnemyEncounterResources/Orc_Easy.tres" type="Resource" id=2]
+[ext_resource path="res://encounters/EnemyEncounterResources/BirdHard.tres" type="Resource" id=3]
+[ext_resource path="res://encounters/EnemyEncounterResources/Ghost_Medium.tres" type="Resource" id=4]
+[ext_resource path="res://encounters/EnemyEncounterResources/Ghost_Easy.tres" type="Resource" id=5]
+[ext_resource path="res://encounters/EnemyEncounterResources/Orc_Hard.tres" type="Resource" id=6]
+[ext_resource path="res://encounters/EnemyEncounterResources/BirdMedium.tres" type="Resource" id=7]
+[ext_resource path="res://encounters/EnemyEncounterResources/SlimeMedium.tres" type="Resource" id=8]
+[ext_resource path="res://encounters/EnemyEncounterResources/SlimeEasy.tres" type="Resource" id=9]
+[ext_resource path="res://encounters/EnemyEncounterResources/SlimeHard.tres" type="Resource" id=10]
+[ext_resource path="res://encounters/EnemyEncounterResources/BirdEasy.tres" type="Resource" id=11]
+[ext_resource path="res://encounters/EnemyEncounterResources/Ghost_Hard.tres" type="Resource" id=12]
+[ext_resource path="res://encounters/EnemyEncounterResources/Orc_Medium.tres" type="Resource" id=13]
+
+[resource]
+script = ExtResource( 1 )
+encounters = [ ExtResource( 11 ), ExtResource( 3 ), ExtResource( 7 ), ExtResource( 5 ), ExtResource( 12 ), ExtResource( 4 ), ExtResource( 2 ), ExtResource( 6 ), ExtResource( 13 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 8 ) ]

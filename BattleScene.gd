@@ -20,14 +20,15 @@ var picross_container
 var cur_card
 var player_hand_container
 
-var playerDeckDef
+#var playerDeckDef
 var playerDeck
 
 signal player_attack
+signal battle_ended
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	player_health = 100
+func init(playerDeckDef, playerHealth, encounter):
+	player_health = playerHealth
+	
 	sprite_container = $PanelContainer/MarginContainer/GridContainer/SpriteContainer
 	monster_health_text = $PanelContainer/MarginContainer/GridContainer/MonsterName/MonsterHealth
 	player_health_text = $PlayerSide/PlayerMargins/PlayerLayout/PlayerHealth
@@ -43,10 +44,11 @@ func _ready():
 	self.connect("player_attack", current_monster, "take_damage")
 	current_monster.connect("monster_attack", self, "player_take_damage")
 	current_monster.connect("monster_queue_change", self, "update_monster_queue")
-	current_monster.init_monster()
+	current_monster.connect("monster_death", self, "_onMonsterDeath")
+	current_monster.init(encounter)
 	
 	#TODO get players actual current deck
-	_generateDefaultPlayerDeck()
+	playerDeck = DeckInstance.new(playerDeckDef)
 	
 	for i in 3:
 		player_hand_container.addCard(playerDeck.draw(), self)
@@ -62,18 +64,6 @@ func _tryDrawCard():
 	if player_hand_container.cardCount() < 5:
 		player_hand_container.addCard(playerDeck.draw(), self)
 
-func _generateDefaultPlayerDeck():
-	var basicAir = load("res://cards/cardObjects/basic_air_attack.tres")
-	var basicFire = load("res://cards/cardObjects/basic_fire_attack.tres")
-	var basicWater = load("res://cards/cardObjects/basic_water_attack.tres")
-	var basicLight = load("res://cards/cardObjects/basic_light_attack.tres")
-	playerDeckDef = DeckDef.new()
-	for i in 4:
-		playerDeckDef.addCard(basicAir)
-		playerDeckDef.addCard(basicFire)
-		playerDeckDef.addCard(basicWater)
-		playerDeckDef.addCard(basicLight)
-	playerDeck = DeckInstance.new(playerDeckDef)
 
 func _process(delta):
 	monster_health_text.text = str(current_monster.remaining_health)
@@ -82,6 +72,14 @@ func _process(delta):
 
 func player_take_damage(damage):
 	player_health -= damage
+	
+	if player_health <= 0:
+		emit_signal("battle_ended", player_health)
+	pass
+
+func _onMonsterDeath():
+	current_monster.disconnect("monster_death", self, "_onMonsterDeath")
+	emit_signal("battle_ended", player_health)
 	pass
 
 func update_monster_queue(action_queue):
