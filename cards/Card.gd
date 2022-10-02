@@ -53,6 +53,9 @@ func _init(cardDef):
 func getPuzzle():
 	return _picross
 	
+func getTexture():
+	return _pickedPicross
+	
 func getCardDef():
 	return _cardDef
 	

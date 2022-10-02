@@ -24,6 +24,7 @@ var monster_timer
 var picross_container
 var cur_card
 var player_hand_container
+var victory_label
 
 #var playerDeckDef
 var playerDeck
@@ -49,6 +50,7 @@ func init(playerDeckDef, playerHealth, encounter, encounterLevel):
 	player_hand_container = $PlayerSide/PlayerMargins/PlayerLayout/PlayerHandContainer
 	monster_name = $EnemySide/MarginContainer/GridContainer/VBoxContainer/MonsterName
 	level_text = $EnemySide/MarginContainer/GridContainer/VBoxContainer/level_text
+	victory_label = $VictoryDefeatLabel
 	level_text.text = "Level " + str(encounterLevel)
 	current_monster = monster_scene.instance()
 	
@@ -94,12 +96,23 @@ func player_take_damage(damage):
 	player_health -= damage
 	
 	if player_health <= 0:
-		emit_signal("battle_ended", player_health)
+		victory_label.text = "Defeat"
+		_playVictoryDefeat()
 	pass
+func _playVictoryDefeat():
+	victory_label.visible = true
+	victory_label.modulate.a = 0
+	var tween = create_tween().set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
+	tween.tween_property(victory_label, "rect_scale", Vector2(2,2), 1)
+	tween.parallel().tween_property(victory_label, "modulate", Color(1,1,1,1), 1)
+	tween.tween_callback(self, "_onBattleEnded");
+	
+func _onBattleEnded():
+	emit_signal("battle_ended", player_health)
 
 func _onMonsterDeath():
 	current_monster.disconnect("monster_death", self, "_onMonsterDeath")
-	emit_signal("battle_ended", player_health)
+	_playVictoryDefeat()
 	pass
 
 func update_monster_queue(action_queue):
@@ -140,13 +153,34 @@ func _on_card_clicked(card):
 
 func _on_picross_complete():
 	if cur_card.getCardDef() is AttackCardDef:
-		emit_signal("player_attack", cur_card.getCardDef().attackType,  cur_card.getCardDef().damage)
+		_animateAttack(cur_card)
 	picross_container.remove_child( cur_card.getPuzzle())
 	cur_card.getPuzzle().disconnect("complete_puzzle", self, "_on_picross_complete")
 	player_hand_container.removeCard(cur_card, self);
 	playerDeck.discard(cur_card.getCardDef())
 	cur_card = null
 	pass
+
+func _animateAttack(cur_card):
+	var sprite = Sprite.new()
+	sprite.scale.x = 20;
+	sprite.scale.y = 20;
+	sprite.texture = cur_card.getTexture()
+	var tween = create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	add_child(sprite)
+	sprite.position = picross_container.rect_position + picross_container.rect_scale*picross_container.rect_size/2.0	
+	tween.tween_property(sprite, "global_position", current_monster.global_position , .5)
+	tween.tween_callback(self, "_triggerDamage", [cur_card]);
+	tween.tween_property(sprite, "scale", Vector2(40,40), .5)
+	tween.parallel().tween_property(sprite, "modulate", Color(1,1,1,0), .5)	
+	tween.tween_callback(self, "_removeSprite", [sprite]);
+	#tween.interpolate_callback(self, 2, "_triggerDamage", sprite)
+
+func _removeSprite(sprite):
+	remove_child(sprite)
+
+func _triggerDamage(cur_card):
+	emit_signal("player_attack", cur_card.getCardDef().attackType,  cur_card.getCardDef().damage)
 
 func _input(event):
 	if event is InputEventKey and event.pressed and event.scancode == KEY_ENTER:
