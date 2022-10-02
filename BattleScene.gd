@@ -65,12 +65,14 @@ func _tryDrawCard():
 func _generateDefaultPlayerDeck():
 	var basicAir = load("res://cards/cardObjects/basic_air_attack.tres")
 	var basicFire = load("res://cards/cardObjects/basic_fire_attack.tres")
-	var basicIce = load("res://cards/cardObjects/basic_ice_attack.tres")
+	var basicWater = load("res://cards/cardObjects/basic_water_attack.tres")
+	var basicLight = load("res://cards/cardObjects/basic_light_attack.tres")
 	playerDeckDef = DeckDef.new()
 	for i in 4:
 		playerDeckDef.addCard(basicAir)
 		playerDeckDef.addCard(basicFire)
-		playerDeckDef.addCard(basicIce)
+		playerDeckDef.addCard(basicWater)
+		playerDeckDef.addCard(basicLight)
 	playerDeck = DeckInstance.new(playerDeckDef)
 
 func _process(delta):

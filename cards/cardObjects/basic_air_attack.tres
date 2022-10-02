@@ -1,16 +1,24 @@
-[gd_resource type="Resource" load_steps=6 format=2]
+[gd_resource type="Resource" load_steps=14 format=2]
 
-[ext_resource path="res://picross/smiley.png" type="Texture" id=1]
-[ext_resource path="res://picross/camel.png" type="Texture" id=2]
+[ext_resource path="res://picross/Air/air_6.png" type="Texture" id=1]
+[ext_resource path="res://picross/Air/air_1.png" type="Texture" id=2]
 [ext_resource path="res://cards/AttackCardDef.gd" type="Script" id=3]
 [ext_resource path="res://cards/cardArt/frame_wood.png" type="Texture" id=4]
 [ext_resource path="res://cards/cardArt/air/tornado2.png" type="Texture" id=5]
+[ext_resource path="res://picross/Air/air_2.png" type="Texture" id=6]
+[ext_resource path="res://picross/Air/air_7.png" type="Texture" id=7]
+[ext_resource path="res://picross/Air/air_8.png" type="Texture" id=8]
+[ext_resource path="res://picross/Air/air_3.png" type="Texture" id=9]
+[ext_resource path="res://picross/Air/air_4.png" type="Texture" id=10]
+[ext_resource path="res://picross/Air/air_5.png" type="Texture" id=11]
+[ext_resource path="res://picross/Air/air_9.png" type="Texture" id=12]
+[ext_resource path="res://picross/Air/air_10.png" type="Texture" id=13]
 
 [resource]
 script = ExtResource( 3 )
 cardName = "Air Attack"
 cardDescription = "A tornado rips through your enemies"
-picrossPool = [ ExtResource( 1 ), ExtResource( 2 ) ]
+picrossPool = [ ExtResource( 2 ), ExtResource( 6 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 1 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 12 ), ExtResource( 13 ) ]
 borderArt = ExtResource( 4 )
 cardArt = ExtResource( 5 )
 damage = 10
