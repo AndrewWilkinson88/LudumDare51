@@ -23,7 +23,7 @@ func _ready():
 	_setupEncounters()
 	_setupDefaultDeck()
 	
-	_battleScene = load("res://BattleScene.tscn")
+	_battleScene = load("res://BattleSceneNew.tscn")
 	_loadNextBattle()
 	
 	pass # Replace with function body.
