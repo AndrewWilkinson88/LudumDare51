@@ -134,7 +134,12 @@ func _generatePicrossText():
 		label.align = Label.ALIGN_CENTER
 		label.valign = Label.VALIGN_BOTTOM
 		add_child(label)
-		label.set_position(Vector2(UI_OFFSET + x * cellTexture.get_width(), 0))	
+		label.set_position(Vector2(UI_OFFSET + x * cellTexture.get_width(), 0))
+		
+		if columnPicrossValues[x].size() == 0:
+			label.text += "-"
+			columnCorrectness[x] = true;
+		
 		for y in columnPicrossValues[x].size():
 			label.text += str(columnPicrossValues[x][y]) 
 			if(y != columnPicrossValues[x].size()-1):
@@ -150,6 +155,11 @@ func _generatePicrossText():
 		label.valign = Label.VALIGN_CENTER
 		add_child(label)
 		label.set_position( Vector2(0,UI_OFFSET + y * cellTexture.get_height()))
+		
+		if rowPicrossValues[y].size() == 0:
+			label.text += "-"
+			rowCorrectness[y] = true;
+		
 		for x in rowPicrossValues[y].size():
 			label.text += str(rowPicrossValues[y][x])
 			if(x != rowPicrossValues[y].size()-1):
@@ -188,7 +198,7 @@ func _checkColumnCorrectness(x):
 				chainCounter = 0;
 				picrossRuleIndex +=1
 	if picrossRuleIndex != columnPicrossValues[x].size():
-		print("picross rule index : " + str(picrossRuleIndex) + "   column size : " + str(columnPicrossValues[x].size()))
+		#print("picross rule index : " + str(picrossRuleIndex) + "   column size : " + str(columnPicrossValues[x].size()))
 		return false
 	return true
 
