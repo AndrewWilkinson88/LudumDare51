@@ -23,14 +23,14 @@ margin_left = -680.0
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 673.0
-margin_bottom = 793.0
+margin_bottom = 893.0
 color = Color( 0.705882, 0.698039, 0.698039, 1 )
 
 [node name="PlayerMargins" type="MarginContainer" parent="PlayerSide"]
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 673.0
-margin_bottom = 793.0
+margin_bottom = 893.0
 custom_constants/margin_right = 20
 custom_constants/margin_top = 20
 custom_constants/margin_left = 20
@@ -40,7 +40,7 @@ custom_constants/margin_bottom = 20
 margin_left = 20.0
 margin_top = 20.0
 margin_right = 646.0
-margin_bottom = 766.0
+margin_bottom = 866.0
 custom_constants/vseparation = 10
 custom_constants/hseparation = 10
 
@@ -55,14 +55,14 @@ valign = 1
 [node name="PicrossContainer" type="ColorRect" parent="PlayerSide/PlayerMargins/PlayerLayout"]
 margin_top = 49.0
 margin_right = 626.0
-margin_bottom = 536.0
+margin_bottom = 636.0
 size_flags_vertical = 3
 color = Color( 0.45098, 0.611765, 1, 1 )
 
 [node name="PlayerHandContainer" type="HBoxContainer" parent="PlayerSide/PlayerMargins/PlayerLayout"]
-margin_top = 546.0
+margin_top = 646.0
 margin_right = 626.0
-margin_bottom = 746.0
+margin_bottom = 846.0
 rect_min_size = Vector2( 0, 200 )
 size_flags_horizontal = 3
 custom_constants/separation = 20
@@ -77,14 +77,14 @@ margin_right = 600.0
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 593.0
-margin_bottom = 793.0
+margin_bottom = 893.0
 color = Color( 0.368627, 0.32549, 0.32549, 1 )
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 593.0
-margin_bottom = 793.0
+margin_bottom = 893.0
 custom_constants/margin_right = 20
 custom_constants/margin_top = 20
 custom_constants/margin_left = 20
@@ -94,7 +94,7 @@ custom_constants/margin_bottom = 20
 margin_left = 20.0
 margin_top = 20.0
 margin_right = 566.0
-margin_bottom = 766.0
+margin_bottom = 866.0
 custom_constants/vseparation = 20
 custom_constants/hseparation = 20
 
@@ -122,14 +122,14 @@ text = "100"
 [node name="SpriteContainer" type="CenterContainer" parent="PanelContainer/MarginContainer/GridContainer"]
 margin_top = 59.0
 margin_right = 546.0
-margin_bottom = 726.0
+margin_bottom = 826.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="MonsterActions" type="HBoxContainer" parent="PanelContainer/MarginContainer/GridContainer"]
-margin_top = 746.0
+margin_top = 846.0
 margin_right = 546.0
-margin_bottom = 746.0
+margin_bottom = 846.0
 alignment = 1
 __meta__ = {
 "_edit_group_": true
