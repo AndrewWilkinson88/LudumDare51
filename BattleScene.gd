@@ -2,7 +2,8 @@ extends Node
 class_name BattleScene
 
 export (PackedScene) var monster_scene
-enum action_type {ACTION_ATTACK, ACTION_IDLE, ACTION_POWERUP, ACTION_CHANGE_ATTACK, ACTION_CHANGE_WEAKNESS}
+export (PackedScene) var monster_action
+enum action_type {ACTION_ATTACK, ACTION_IDLE, ACTION_POWERUP, ACTION_CHANGE_WEAKNESS}
 enum attack_type {ATTACK_FIRE, ATTACK_AIR, ATTACK_ICE, ATTACK_PHYSICAL}
 enum weakness_type {WEAKNESS_FIRE, WEAKNESS_AIR, WEAKNESS_ICE, WEAKNESS_LIGHT}
 
@@ -10,11 +11,12 @@ var player_health
 var player_deck
 var player_hand
 var current_monster: Sprite
-var sprite_container
+var monster_container
 var player_health_text
 var monster_health_text
 var monster_actions
 var monster_init
+var monster_timer
 
 var picross_container
 var cur_card
@@ -22,29 +24,37 @@ var player_hand_container
 
 var playerDeckDef
 var playerDeck
+var arrow_image
 
 signal player_attack
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	player_health = 100
-	sprite_container = $PanelContainer/MarginContainer/GridContainer/SpriteContainer
-	monster_health_text = $PanelContainer/MarginContainer/GridContainer/MonsterName/MonsterHealth
-	player_health_text = $PlayerSide/PlayerMargins/PlayerLayout/PlayerHealth
-	monster_actions = $PanelContainer/MarginContainer/GridContainer/MonsterActions
-	picross_container = $PlayerSide/PlayerMargins/PlayerLayout/PicrossContainer
+	
+	#Monster Stuff
+	monster_container = $EnemySide/MarginContainer/GridContainer/MonsterContainer
+	monster_health_text = $EnemySide/MarginContainer/GridContainer/VBoxContainer/HBoxContainer/Label_monster_health
+	monster_actions = $EnemySide/MarginContainer/GridContainer/MonsterActions
+	arrow_image = Image.new()
+	arrow_image.load("res://UI_Art/Action_Arrow.png")
+	
+	
+	#Player Stuff
+	player_health_text = $PlayerSide/PlayerMargins/PlayerLayout/GridContainer/VBoxContainer/HBoxContainer/Label_PlayerHealth
+	picross_container = $PlayerSide/PlayerMargins/PlayerLayout/GridContainer/PicrossContainer
 	player_hand_container = $PlayerSide/PlayerMargins/PlayerLayout/PlayerHandContainer
 	current_monster = monster_scene.instance()
 	
-	sprite_container.add_child(current_monster)
-	var sprite_rect = sprite_container.get_rect()
-	current_monster.position.x = sprite_container.rect_position.x + sprite_rect.size.x / 2
-	current_monster.position.y = sprite_container.rect_position.y + sprite_rect.size.y / 2
+	monster_container.add_child(current_monster)
+	var sprite_rect = monster_container.get_rect()
+	current_monster.position.x = monster_container.rect_position.x + sprite_rect.size.x / 2
+	current_monster.position.y = monster_container.rect_position.y + sprite_rect.size.y / 2
 	self.connect("player_attack", current_monster, "take_damage")
 	current_monster.connect("monster_attack", self, "player_take_damage")
 	current_monster.connect("monster_queue_change", self, "update_monster_queue")
 	current_monster.init_monster()
-	
+	monster_timer = current_monster.get_node("MonsterActionTimer")
 	#TODO get players actual current deck
 	_generateDefaultPlayerDeck()
 	
@@ -78,6 +88,9 @@ func _generateDefaultPlayerDeck():
 func _process(delta):
 	monster_health_text.text = str(current_monster.remaining_health)
 	player_health_text.text = str(player_health)
+	if(monster_actions.get_child_count() != 0):
+		monster_actions.get_child(0).value = 10-monster_timer.time_left
+		pass
 	pass
 
 func player_take_damage(damage):
@@ -90,21 +103,23 @@ func update_monster_queue(action_queue):
 		n.queue_free()
 
 	for x in action_queue:
-		var label = Label.new()
-		label.align = Label.ALIGN_CENTER
-		label.align = Label.VALIGN_BOTTOM
+		var new_action = monster_action.instance()
+		var label = new_action.get_node("Label_action")
 		match(x):
 			action_type.ACTION_IDLE:
 				label.text = "Idle"
 			action_type.ACTION_ATTACK:
 				label.text = "Attack"
 			action_type.ACTION_CHANGE_WEAKNESS:
-				label.text = "Change Defense"
-			action_type.ACTION_CHANGE_ATTACK:
-				label.text = "Change Attack"
+				label.text = "ChDef"
 			action_type.ACTION_POWERUP:
-				label.text = "Power Up"
-		monster_actions.add_child(label)
+				label.text = "PwrUp"
+		monster_actions.add_child(new_action)
+		var arrow = TextureRect.new()
+		arrow.texture = load("res://UI_Art/Action_Arrow.png")
+		arrow.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		monster_actions.add_child(arrow)
+		
 	pass
 
 func _on_card_clicked(card):
@@ -116,6 +131,7 @@ func _on_card_clicked(card):
 	var puzzle = card.getPuzzle()
 	picross_container.add_child(puzzle)
 	puzzle.connect("complete_puzzle", self, "_on_picross_complete")
+	pass
 
 func _on_picross_complete():
 	if cur_card.getCardDef() is AttackCardDef:
@@ -125,6 +141,5 @@ func _on_picross_complete():
 	player_hand_container.removeCard(cur_card, self);
 	playerDeck.discard(cur_card.getCardDef())
 	cur_card = null
-	
 	pass
 

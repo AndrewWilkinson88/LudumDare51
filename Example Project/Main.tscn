@@ -4,8 +4,9 @@
 [ext_resource path="res://Example Project/Main.gd" type="Script" id=2]
 [ext_resource path="res://Example Project/Mob.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Example Project/HUD.tscn" type="PackedScene" id=4]
-[ext_resource path="res://art/House In a Forest Loop.ogg" type="AudioStream" id=5]
-[ext_resource path="res://art/gameover.wav" type="AudioStream" id=6]
+[ext_resource path="res://Example Project/art/House In a Forest Loop.ogg" type="AudioStream" id=5]
+[ext_resource path="res://Example Project/art/gameover.wav" type="AudioStream" id=6]
+
 
 [sub_resource type="Curve2D" id=1]
 _data = {
