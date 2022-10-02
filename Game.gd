@@ -23,7 +23,7 @@ func _ready():
 	_setupEncounters()
 	_setupDefaultDeck()
 	
-	_battleScene = load("res://BattleSceneNew.tscn")
+	_battleScene = load("res://BattleScene.tscn")
 	_loadNextBattle()
 	
 	pass # Replace with function body.
@@ -53,7 +53,7 @@ func _setupDefaultDeck():
 func _loadNextBattle():
 	_curBattle = _battleScene.instance()
 	add_child(_curBattle)
-	_curBattle.init(_curDeckDef, _curPlayerHealth, encounters[_curEncounterLevel])
+	_curBattle.init(_curDeckDef, _curPlayerHealth, encounters[_curEncounterLevel], _curEncounterLevel+1)
 	_curBattle.connect("battle_ended", self, "_handleBattleEnded")	
 
 func _handleBattleEnded(playerHealth:int):
@@ -63,9 +63,12 @@ func _handleBattleEnded(playerHealth:int):
 	if _curPlayerHealth <= 0:
 		#TODO game over
 		print("GAME OVER")
-	elif _curEncounterLevel < NUM_ENCOUNTERS:
+	elif _curEncounterLevel < NUM_ENCOUNTERS-1:
 		_curEncounterLevel += 1
 		_loadNextBattle()
 	else:
 		#TODO make victory screen
-		print("YOU WIN!")
+		#print("YOU WIN!")
+		var victoryScreenDef = load("res://VictoryScreen.tscn")
+		var victoryScreen = victoryScreenDef.instance()
+		add_child(victoryScreen)

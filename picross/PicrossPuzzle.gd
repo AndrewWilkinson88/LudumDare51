@@ -36,6 +36,9 @@ var rowLabels
 
 # Called when the node enters the scene tree for the first time.
 func _init(puzzleTexture):
+	scale.x = 1.5
+	scale.y = 1.5
+	
 	curPuzzleTexture = puzzleTexture
 	#connect("complete_puzzle", self, "_test_signal_handler")	
 	font = DynamicFont.new()

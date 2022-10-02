@@ -15,6 +15,7 @@ var monster_container
 var player_health_text
 var monster_health_text
 var monster_actions
+var level_text
 
 #var monster_init
 var monster_name
@@ -31,7 +32,7 @@ var arrow_image
 signal player_attack
 signal battle_ended
 
-func init(playerDeckDef, playerHealth, encounter):
+func init(playerDeckDef, playerHealth, encounter, encounterLevel):
 	player_health = playerHealth
 	
 
@@ -47,6 +48,8 @@ func init(playerDeckDef, playerHealth, encounter):
 	picross_container = $PlayerSide/PlayerMargins/PlayerLayout/GridContainer/PicrossContainer
 	player_hand_container = $PlayerSide/PlayerMargins/PlayerLayout/PlayerHandContainer
 	monster_name = $EnemySide/MarginContainer/GridContainer/VBoxContainer/MonsterName
+	level_text = $EnemySide/MarginContainer/GridContainer/VBoxContainer/level_text
+	level_text.text = "Level " + str(encounterLevel)
 	current_monster = monster_scene.instance()
 	
 	monster_container.add_child(current_monster)
@@ -145,3 +148,6 @@ func _on_picross_complete():
 	cur_card = null
 	pass
 
+func _input(event):
+	if event is InputEventKey and event.pressed and event.scancode == KEY_ENTER:
+		_tryDrawCard()
