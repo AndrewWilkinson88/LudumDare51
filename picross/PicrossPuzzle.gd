@@ -235,41 +235,6 @@ func _checkColumnCorrectness(x):
 	return VALIDATION_STATE.GOOD
 
 
-### INPUT HANDLING!  ############################
-var leftButtonDown : bool = false
-var dragType = PicrossCell.CELL_STATE.UNDEFINED
-var rightButtonDown : bool = false
-
-func _input(event):
-	if event is InputEventMouse:
-		var pos = gamefield.to_local(event.position)
-		var x :int = pos.x / cellTexture.get_width()
-		var y :int = pos.y / cellTexture.get_height()
-		var isValidCell = x >= 0 and x < puzzleWidth and y >= 0 and y < puzzleHeight
-		
-		if  (event is InputEventMouseButton):
-			if  (event.button_index == BUTTON_LEFT and event.pressed and isValidCell):
-				leftButtonDown = true
-				dragType = (picrossField[x][y].getState() + 1) % 3
-			elif(event.button_index == BUTTON_LEFT and not event.pressed): 
-				leftButtonDown = false
-						
-			if  (event.button_index == BUTTON_RIGHT and event.pressed):     
-				rightButtonDown = true
-			elif(event.button_index == BUTTON_RIGHT and not event.pressed): 
-				rightButtonDown = false
-		
-		var changed = false
-		if leftButtonDown and isValidCell:
-			changed = picrossField[x][y].setState(dragType)			
-		if rightButtonDown and isValidCell:
-			changed = picrossField[x][y].setState(PicrossCell.CELL_STATE.NO)
-		if changed:
-			_checkCorrectness(x, y)
-	if event is InputEventKey and event.pressed and event.scancode == KEY_SPACE:
-		_win()
-	pass
-
 func _checkCorrectness(x, y):
 	var prevColumnCorrectness = columnCorrectness[x]
 	columnCorrectness[x] = _checkColumnCorrectness(x)
@@ -338,3 +303,48 @@ func fadeIn(duration = .25, target = null, callback = null, args = []):
 			
 	if target != null && callback != null:
 		tween.tween_callback(target, callback, args)
+		
+
+
+### INPUT HANDLING!  ############################
+var leftButtonDown : bool = false
+var dragType = PicrossCell.CELL_STATE.UNDEFINED
+var rightButtonDown : bool = false
+
+func _input(event):
+	if event is InputEventMouse:
+		var pos = gamefield.to_local(event.position)
+		var x :int = pos.x / cellTexture.get_width()
+		var y :int = pos.y / cellTexture.get_height()
+		var isValidCell = x >= 0 and x < puzzleWidth and y >= 0 and y < puzzleHeight
+		
+		var changed = false
+		if  (event is InputEventMouseButton):
+			if  (event.button_index == BUTTON_LEFT and event.pressed and isValidCell):
+				leftButtonDown = true
+				dragType = (picrossField[x][y].getState() + 1) % 3
+			elif(event.button_index == BUTTON_LEFT and not event.pressed): 
+				leftButtonDown = false
+						
+			if  (event.button_index == BUTTON_RIGHT and event.pressed):
+				if picrossField[x][y].getState() == PicrossCell.CELL_STATE.NO:
+					dragType = PicrossCell.CELL_STATE.UNDEFINED				
+				else:
+					dragType = PicrossCell.CELL_STATE.NO
+				if picrossField[x][y].getState() == PicrossCell.CELL_STATE.YES:
+					changed = picrossField[x][y].setState(PicrossCell.CELL_STATE.NO)
+					dragType = PicrossCell.CELL_STATE.NO
+				rightButtonDown = true
+			elif(event.button_index == BUTTON_RIGHT and not event.pressed): 
+				rightButtonDown = false
+		
+		if leftButtonDown and isValidCell:
+			changed = picrossField[x][y].setState(dragType)			
+		if rightButtonDown and isValidCell:
+			if picrossField[x][y].getState() != PicrossCell.CELL_STATE.YES:
+				changed = picrossField[x][y].setState(dragType)
+		if changed:
+			_checkCorrectness(x, y)
+	if event is InputEventKey and event.pressed and event.scancode == KEY_SPACE:
+		_win()
+	pass
