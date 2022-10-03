@@ -77,8 +77,9 @@ func init(playerDeckDef, playerHealth, playerAttackBonus, playerPowerup, encount
 	monster_name.text = encounter.encounterName
 	current_monster.position.x = monster_container.rect_position.x + sprite_rect.size.x / 2
 	current_monster.position.y = monster_container.rect_position.y + sprite_rect.size.y / 2
-		
-	$EnemySide/MarginContainer/GridContainer/VBoxContainer/HBoxContainer2/VBoxContainer2/Label_EnemyWeakness.text = Monster.weakness_type.keys()[current_monster.current_weakness_type]	
+	
+	current_monster.connect("monster_weakness_change", self, "_onMonsterWeaknessChange")
+	_onMonsterWeaknessChange()	
 	current_monster.connect("monster_attack_change", self, "_onMonsterAttackChange")
 	_onMonsterAttackChange(encounter.attack)
 	
@@ -97,6 +98,9 @@ func init(playerDeckDef, playerHealth, playerAttackBonus, playerPowerup, encount
 
 func _onMonsterAttackChange(newAttack):
 	$EnemySide/MarginContainer/GridContainer/VBoxContainer/HBoxContainer2/VBoxContainer2/Label_EnemyAttack.text = str(newAttack)
+
+func _onMonsterWeaknessChange():
+	$EnemySide/MarginContainer/GridContainer/VBoxContainer/HBoxContainer2/VBoxContainer2/Label_EnemyWeakness.text = Monster.weakness_type.keys()[current_monster.current_weakness_type]	
 
 func _usePowerup():
 	if(cur_card != null ):
