@@ -110,7 +110,9 @@ func _handleBattleEnded(playerHealth:int):
 	_curBattle.disconnect("battle_ended", self, "_handleBattleEnded")	
 	if _curPlayerHealth <= 0:
 		remove_child(_curBattle)
-		print("GAME OVER")
+		var defeatScreenDef = load("res://DefeatScreen.tscn")
+		var defeatScreen = defeatScreenDef.instance()
+		add_child(defeatScreen)
 	elif _curEncounterLevel < NUM_ENCOUNTERS-1:
 		_curEncounterLevel += 1
 		#_loadNextBattle()

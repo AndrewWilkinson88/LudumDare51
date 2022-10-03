@@ -201,3 +201,5 @@ func _triggerDamage(cur_card):
 func _input(event):
 	if event is InputEventKey and event.pressed and event.scancode == KEY_ENTER:
 		_tryDrawCard()
+	if event is InputEventKey and event.pressed and event.scancode == KEY_TAB:
+		player_take_damage(20)
