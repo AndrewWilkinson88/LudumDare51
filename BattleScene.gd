@@ -170,23 +170,36 @@ func update_monster_queue(action_queue):
 func _on_card_clicked(card):
 	if cur_card != null :
 		var oldPuzzle = cur_card.getPuzzle()
-		picross_container.remove_child(oldPuzzle)
+		oldPuzzle.fadeOut(.25, self, "_loadNewPuzzle", [oldPuzzle])
 		oldPuzzle.disconnect("complete_puzzle", self, "_on_picross_complete")
-	cur_card = card
-	var puzzle = card.getPuzzle()
-	picross_container.add_child(puzzle)
-	puzzle.connect("complete_puzzle", self, "_on_picross_complete")
+		cur_card = card
+	else :
+		cur_card = card
+		_loadNewPuzzle()
 	pass
+
+func _loadNewPuzzle(oldPuzzle = null):
+	if(oldPuzzle != null):
+		_remove_puzzle(oldPuzzle)
+	var puzzle = cur_card.getPuzzle()
+	picross_container.add_child(puzzle)
+	puzzle.fadeIn()
+	puzzle.connect("complete_puzzle", self, "_on_picross_complete")
 
 func _on_picross_complete():
 	if cur_card.getCardDef() is AttackCardDef:
 		_animateAttack(cur_card)
-	picross_container.remove_child( cur_card.getPuzzle())
+	
+	cur_card.getPuzzle().fadeOut(.25, self, "_remove_puzzle", [cur_card.getPuzzle()])
+	
 	cur_card.getPuzzle().disconnect("complete_puzzle", self, "_on_picross_complete")
 	player_hand_container.removeCard(cur_card, self);
 	playerDeck.discard(cur_card.getCardDef())
 	cur_card = null
 	pass
+	
+func _remove_puzzle(puzzle):	
+	picross_container.remove_child(puzzle)
 
 func _animateAttack(cur_card):
 	var sprite = Sprite.new()

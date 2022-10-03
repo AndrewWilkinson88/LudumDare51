@@ -42,6 +42,8 @@ var rowCorrectness
 var columnLabels
 var rowLabels
 
+var inputAllowed = true
+
 # Called when the node enters the scene tree for the first time.
 func _init(puzzleTexture):
 	scale.x = 1.5
@@ -283,10 +285,10 @@ func _checkCorrectness(x, y):
 	
 func _checkFullCorrectness():
 	for c in columnCorrectness :
-		if c == VALIDATION_STATE.GOOD:
+		if c != VALIDATION_STATE.GOOD:
 			return false
 	for r in rowCorrectness :
-		if r == VALIDATION_STATE.GOOD:
+		if r != VALIDATION_STATE.GOOD:
 			return false
 	return true
 
@@ -296,3 +298,19 @@ func _checkFullCorrectness():
 func _win():
 	emit_signal("complete_puzzle")
 	pass
+
+func fadeOut(duration = .25, target = null, callback = null, args = []):
+	var tween = create_tween().set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
+	for x in puzzleWidth:
+		for y in puzzleHeight:
+			picrossField[x][y].fadeOut(duration, null, null, tween)
+	if target != null && callback != null:
+		tween.tween_callback(target, callback, args)
+			
+func fadeIn(duration = .25, target = null, callback = null, args = []):
+	var tween = create_tween().set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
+	for x in puzzleWidth:
+		for y in puzzleHeight:
+			picrossField[x][y].fadeIn(duration, null, null, tween)
+	if target != null && callback != null:
+		tween.tween_callback(target, callback, args)
