@@ -202,7 +202,7 @@ custom_constants/hseparation = 20
 
 [node name="VBoxContainer" type="VBoxContainer" parent="EnemySide/MarginContainer/GridContainer"]
 margin_right = 596.0
-margin_bottom = 158.0
+margin_bottom = 262.0
 size_flags_horizontal = 7
 custom_constants/separation = 10
 
@@ -254,8 +254,59 @@ custom_fonts/font = SubResource( 2 )
 text = "Deadly Dodo Bird"
 align = 1
 
+[node name="HBoxContainer2" type="HBoxContainer" parent="EnemySide/MarginContainer/GridContainer/VBoxContainer"]
+margin_top = 168.0
+margin_right = 596.0
+margin_bottom = 252.0
+custom_constants/separation = 50
+
+[node name="VBoxContainer" type="VBoxContainer" parent="EnemySide/MarginContainer/GridContainer/VBoxContainer/HBoxContainer2"]
+margin_right = 168.0
+margin_bottom = 84.0
+custom_constants/separation = 20
+
+[node name="Label_Attack" type="Label" parent="EnemySide/MarginContainer/GridContainer/VBoxContainer/HBoxContainer2/VBoxContainer"]
+margin_right = 168.0
+margin_bottom = 32.0
+custom_fonts/font = SubResource( 2 )
+text = "ATTACK"
+
+[node name="Label_Weakness" type="Label" parent="EnemySide/MarginContainer/GridContainer/VBoxContainer/HBoxContainer2/VBoxContainer"]
+margin_top = 52.0
+margin_right = 168.0
+margin_bottom = 84.0
+custom_fonts/font = SubResource( 2 )
+text = "WEAKNESS"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="EnemySide/MarginContainer/GridContainer/VBoxContainer/HBoxContainer2"]
+margin_left = 218.0
+margin_right = 292.0
+margin_bottom = 84.0
+custom_constants/separation = 20
+
+[node name="Label_EnemyAttack" type="Label" parent="EnemySide/MarginContainer/GridContainer/VBoxContainer/HBoxContainer2/VBoxContainer2"]
+margin_right = 74.0
+margin_bottom = 32.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 2 )
+text = "0"
+
+[node name="Label_EnemyWeakness" type="Label" parent="EnemySide/MarginContainer/GridContainer/VBoxContainer/HBoxContainer2/VBoxContainer2"]
+margin_top = 52.0
+margin_right = 74.0
+margin_bottom = 84.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 2 )
+text = "Light"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="EnemySide/MarginContainer/GridContainer/VBoxContainer"]
+margin_top = 262.0
+margin_right = 596.0
+margin_bottom = 262.0
+custom_constants/separation = 50
+
 [node name="MonsterContainer" type="Control" parent="EnemySide/MarginContainer/GridContainer"]
-margin_top = 178.0
+margin_top = 282.0
 margin_right = 596.0
 margin_bottom = 704.0
 size_flags_horizontal = 7
