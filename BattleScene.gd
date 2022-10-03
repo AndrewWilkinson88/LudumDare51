@@ -32,6 +32,8 @@ var victory_label
 var playerDeck
 var arrow_image
 
+var isSwitchingPuzzles = false
+
 signal player_attack
 signal battle_ended
 
@@ -168,6 +170,10 @@ func update_monster_queue(action_queue):
 	pass
 
 func _on_card_clicked(card):
+	if isSwitchingPuzzles or card == cur_card:
+		return
+	
+	isSwitchingPuzzles = true;
 	if cur_card != null :
 		var oldPuzzle = cur_card.getPuzzle()
 		oldPuzzle.fadeOut(.25, self, "_loadNewPuzzle", [oldPuzzle])
@@ -183,8 +189,11 @@ func _loadNewPuzzle(oldPuzzle = null):
 		_remove_puzzle(oldPuzzle)
 	var puzzle = cur_card.getPuzzle()
 	picross_container.add_child(puzzle)
-	puzzle.fadeIn()
+	puzzle.fadeIn(.25, self, "_transitionComplete")
 	puzzle.connect("complete_puzzle", self, "_on_picross_complete")
+
+func _transitionComplete():
+	isSwitchingPuzzles = false;
 
 func _on_picross_complete():
 	if cur_card.getCardDef() is AttackCardDef:

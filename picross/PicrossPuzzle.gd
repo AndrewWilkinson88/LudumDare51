@@ -304,6 +304,12 @@ func fadeOut(duration = .25, target = null, callback = null, args = []):
 	for x in puzzleWidth:
 		for y in puzzleHeight:
 			picrossField[x][y].fadeOut(duration, null, null, tween)
+			
+	for c in columnLabels:
+		tween.parallel().tween_property(c, "modulate", Color(c.modulate.r,c.modulate.g,c.modulate.b,0), duration)
+	for c in rowLabels:
+		tween.parallel().tween_property(c, "modulate", Color(c.modulate.r,c.modulate.g,c.modulate.b,0), duration)
+	
 	if target != null && callback != null:
 		tween.tween_callback(target, callback, args)
 			
@@ -312,5 +318,11 @@ func fadeIn(duration = .25, target = null, callback = null, args = []):
 	for x in puzzleWidth:
 		for y in puzzleHeight:
 			picrossField[x][y].fadeIn(duration, null, null, tween)
+			
+	for c in columnLabels:
+		tween.parallel().tween_property(c, "modulate", Color(c.modulate.r,c.modulate.g,c.modulate.b,1), duration)
+	for c in rowLabels:
+		tween.parallel().tween_property(c, "modulate", Color(c.modulate.r,c.modulate.g,c.modulate.b,1), duration)
+			
 	if target != null && callback != null:
 		tween.tween_callback(target, callback, args)

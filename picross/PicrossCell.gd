@@ -45,29 +45,28 @@ func setState(cellState):
 
 func animateOverlay(cellState):
 	var tween = create_tween().set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
-	fadeIn()
+	#fadeIn()
 	setOverlay(cellState)
 #	if(overlay.texture != null):
 #		tween.tween_property(overlay, "scale", Vector2(2,2), .25)
 #		tween.parallel().tween_property(overlay, "modulate", Color(1,1,1,0), .25)
 #		tween.tween_callback(self, "setOverlay", [cellState])
 #	else:
-	#overlay.scale = Vector2(.1,.1)
-	#overlay.modulate = Color(1,1,1,0)
-	
-	#tween.tween_property(overlay, "scale", Vector2(1,1), .25)
-	#tween.parallel().tween_property(overlay, "modulate", Color(1,1,1,1), .25)
+	overlay.scale = Vector2(.1,.1)
+	overlay.modulate = Color(1,1,1,0)
+	tween.tween_property(overlay, "scale", Vector2(1,1), .25)
+	tween.parallel().tween_property(overlay, "modulate", Color(1,1,1,1), .25)
 
 func fadeOut(duration = .25, target = null, callback = null, tween = null):
 	if tween == null:
 		tween = create_tween().set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
-	overlay.scale = Vector2(1,1)
+	#overlay.scale = Vector2(1,1)
 	overlay.modulate = Color(1,1,1,1)
-	cell.scale = Vector2(1,1)
+	#cell.scale = Vector2(1,1)
 	cell.modulate = Color(1,1,1,1)
-	tween.parallel().tween_property(overlay, "scale", Vector2(.1,.1), duration)
+	#tween.parallel().tween_property(overlay, "scale", Vector2(.1,.1), duration)
 	tween.parallel().tween_property(overlay, "modulate", Color(1,1,1,0), duration)
-	tween.parallel().tween_property(cell, "scale", Vector2(.1,.1), duration)
+	#tween.parallel().tween_property(cell, "scale", Vector2(.1,.1), duration)
 	tween.parallel().tween_property(cell, "modulate", Color(1,1,1,0), duration)
 	if target != null && callback != null:
 		tween.tween_callback(target, callback)
@@ -76,13 +75,13 @@ func fadeIn(duration = .25, target = null, callback = null, tween = null):
 	if tween == null:
 		tween = create_tween().set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
 	
-	overlay.scale = Vector2(.1,.1)
+	#overlay.scale = Vector2(.1,.1)
 	overlay.modulate = Color(1,1,1,0)
-	cell.scale = Vector2(.1,.1)
+	#cell.scale = Vector2(.1,.1)
 	cell.modulate = Color(1,1,1,0)
-	tween.parallel().tween_property(overlay, "scale", Vector2(1,1), duration)
+	#tween.parallel().tween_property(overlay, "scale", Vector2(1,1), duration)
 	tween.parallel().tween_property(overlay, "modulate", Color(1,1,1,1), duration)
-	tween.parallel().tween_property(cell, "scale", Vector2(1,1), duration)
+	#tween.parallel().tween_property(cell, "scale", Vector2(1,1), duration)
 	tween.parallel().tween_property(cell, "modulate", Color(1,1,1,1), duration)
 	if target != null && callback != null:
 		tween.tween_callback(target, callback)
