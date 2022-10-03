@@ -57,7 +57,8 @@ func _setupDefaultDeck():
 
 func _loadNextBattle():
 	_curBattle = _battleScene.instance()
-	add_child(_curBattle)	
+	add_child(_curBattle)
+	move_child(_curBattle, 0)
 	_curBattle.init(_curDeckDef, _curPlayerHealth, _playerAttackBonus, _playerPowerup, encounters[_curEncounterLevel], _curEncounterLevel+1)
 	_curBattle.connect("battle_ended", self, "_handleBattleEnded")
 	
