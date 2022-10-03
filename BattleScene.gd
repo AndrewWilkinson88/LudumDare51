@@ -64,8 +64,8 @@ func init(playerDeckDef, playerHealth, playerAttackBonus, playerPowerup, encount
 	level_text = $EnemySide/MarginContainer/GridContainer/VBoxContainer/level_text
 	victory_label = $VictoryDefeatLabel
 	level_text.text = "Level " + str(encounterLevel)
-	current_monster = monster_scene.instance()
-	
+
+	current_monster = monster_scene.instance()	
 	monster_container.add_child(current_monster)
 	var sprite_rect = monster_container.get_rect()
 	self.connect("player_attack", current_monster, "take_damage")
@@ -77,6 +77,10 @@ func init(playerDeckDef, playerHealth, playerAttackBonus, playerPowerup, encount
 	monster_name.text = encounter.encounterName
 	current_monster.position.x = monster_container.rect_position.x + sprite_rect.size.x / 2
 	current_monster.position.y = monster_container.rect_position.y + sprite_rect.size.y / 2
+		
+	$EnemySide/MarginContainer/GridContainer/VBoxContainer/HBoxContainer2/VBoxContainer2/Label_EnemyWeakness.text = Monster.weakness_type.keys()[current_monster.current_weakness_type]	
+	current_monster.connect("monster_attack_change", self, "_onMonsterAttackChange")
+	_onMonsterAttackChange(encounter.attack)
 	
 	#TODO get players actual current deck
 	playerDeck = DeckInstance.new(playerDeckDef)
@@ -90,6 +94,9 @@ func init(playerDeckDef, playerHealth, playerAttackBonus, playerPowerup, encount
 	timer.connect("timeout",self,"_tryDrawCard") 
 	timer.start()
 	pass 
+
+func _onMonsterAttackChange(newAttack):
+	$EnemySide/MarginContainer/GridContainer/VBoxContainer/HBoxContainer2/VBoxContainer2/Label_EnemyAttack.text = str(newAttack)
 
 func _usePowerup():
 	if(cur_card != null ):

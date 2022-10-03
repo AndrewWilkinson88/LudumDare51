@@ -1,12 +1,16 @@
 extends Sprite
+
+class_name Monster 
+
 signal monster_attack
 signal monster_spawn
 signal monster_queue_change
+signal monster_attack_change
 
 signal monster_death
 
 enum action_type {ACTION_ATTACK, ACTION_IDLE, ACTION_POWERUP, ACTION_CHANGE_WEAKNESS}
-enum weakness_type {WEAKNESS_FIRE, WEAKNESS_AIR, WEAKNESS_WATER, WEAKNESS_LIGHT}
+enum weakness_type {FIRE, AIR, WATER, LIGHT}
 
 var action_queue = []
 
@@ -70,6 +74,7 @@ func take_monster_action():
 			pass
 		action_type.ACTION_POWERUP:
 			current_attack_damage += 5
+			emit_signal("monster_attack_change", current_attack_damage)
 			pass
 			
 	if( action_counter % 4 == 0 ):
