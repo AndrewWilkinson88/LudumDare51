@@ -147,7 +147,7 @@ margin_right = 832.0
 margin_bottom = 604.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-color = Color( 0.45098, 0.611765, 1, 1 )
+color = Color( 0.45098, 0.611765, 1, 0 )
 
 [node name="PlayerHandContainer" type="HBoxContainer" parent="PlayerSide/PlayerMargins/PlayerLayout"]
 margin_top = 614.0
@@ -156,7 +156,6 @@ margin_bottom = 814.0
 rect_min_size = Vector2( 0, 200 )
 size_flags_horizontal = 3
 custom_constants/separation = 20
-alignment = 1
 script = ExtResource( 4 )
 
 [node name="Separator" type="NinePatchRect" parent="."]

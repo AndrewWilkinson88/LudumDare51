@@ -19,7 +19,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://BattleScene.gd"
 }, {
-"base": "Node2D",
+"base": "TextureRect",
 "class": "Card",
 "language": "GDScript",
 "path": "res://cards/Card.gd"
@@ -54,11 +54,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Game.gd"
 }, {
-"base": "Sprite",
-"class": "Monster",
-"language": "GDScript",
-"path": "res://Monster.gd"
-}, {
 "base": "Node2D",
 "class": "PicrossCell",
 "language": "GDScript",
@@ -84,7 +79,6 @@ _global_script_class_icons={
 "Encounter": "",
 "EncounterList": "",
 "Game": "",
-"Monster": "",
 "PicrossCell": "",
 "PicrossPuzzle": "",
 "PlayerHand": ""

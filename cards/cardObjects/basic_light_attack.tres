@@ -2,7 +2,7 @@
 
 [ext_resource path="res://cards/AttackCardDef.gd" type="Script" id=1]
 [ext_resource path="res://picross/LIght/light_3.png" type="Texture" id=2]
-[ext_resource path="res://cards/cardArt/frame_title_sci-fi.png" type="Texture" id=3]
+[ext_resource path="res://UI_Art/Llight_Card.png" type="Texture" id=3]
 [ext_resource path="res://picross/LIght/light_1.png" type="Texture" id=4]
 [ext_resource path="res://picross/LIght/light_2.png" type="Texture" id=5]
 [ext_resource path="res://cards/cardArt/physical/fightingstance2.png" type="Texture" id=6]

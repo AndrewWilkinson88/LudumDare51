@@ -7,6 +7,7 @@ enum action_type {ACTION_ATTACK, ACTION_IDLE, ACTION_POWERUP, ACTION_CHANGE_WEAK
 enum attack_type {ATTACK_FIRE, ATTACK_AIR, ATTACK_ICE, ATTACK_PHYSICAL}
 enum weakness_type {WEAKNESS_FIRE, WEAKNESS_AIR, WEAKNESS_ICE, WEAKNESS_LIGHT}
 
+var player_start_health
 var player_health
 var player_deck
 var player_hand
@@ -16,8 +17,10 @@ var player_health_text
 var _playerAttackBonus
 var _playerPowerup
 var monster_health_text
+var monster_health_bar
 var monster_actions
 var level_text
+var player_health_bar
 
 #var monster_init
 var monster_name
@@ -38,6 +41,7 @@ signal player_attack
 signal battle_ended
 
 func init(playerDeckDef, playerHealth, playerAttackBonus, playerPowerup, encounter, encounterLevel):
+	player_start_health = playerHealth
 	player_health = playerHealth
 	_playerAttackBonus = playerAttackBonus
 	_playerPowerup = playerPowerup
@@ -55,10 +59,12 @@ func init(playerDeckDef, playerHealth, playerAttackBonus, playerPowerup, encount
 	monster_container = $EnemySide/MarginContainer/GridContainer/MonsterContainer
 	monster_health_text = $EnemySide/MarginContainer/GridContainer/VBoxContainer/HBoxContainer/Label_monster_health
 	monster_actions = $EnemySide/MarginContainer/GridContainer/MonsterActions
+	monster_health_bar = $EnemySide/MarginContainer/GridContainer/VBoxContainer/MonsterHealthProgress
 	arrow_image = Image.new()
 	arrow_image.load("res://UI_Art/Action_Arrow.png")
 
 	#Player Stuff
+	player_health_bar = $PlayerSide/PlayerMargins/PlayerLayout/GridContainer/VBoxContainer/TextureProgress
 	player_health_text = $PlayerSide/PlayerMargins/PlayerLayout/GridContainer/VBoxContainer/HBoxContainer/Label_PlayerHealth
 	picross_container = $PlayerSide/PlayerMargins/PlayerLayout/GridContainer/PicrossContainer
 	player_hand_container = $PlayerSide/PlayerMargins/PlayerLayout/PlayerHandContainer
@@ -75,6 +81,9 @@ func init(playerDeckDef, playerHealth, playerAttackBonus, playerPowerup, encount
 	current_monster.connect("monster_queue_change", self, "update_monster_queue")
 	current_monster.connect("monster_death", self, "_onMonsterDeath")
 	current_monster.init(encounter)
+	monster_health_bar.max_value = current_monster.remaining_health
+	monster_health_bar.value = current_monster.remaining_health
+	
 	monster_timer = current_monster.get_node("MonsterActionTimer")
 	monster_name.text = encounter.encounterName
 	current_monster.position.x = sprite_rect.size.x / 2
@@ -102,7 +111,7 @@ func _onMonsterAttackChange(newAttack):
 	$EnemySide/MarginContainer/GridContainer/VBoxContainer/HBoxContainer2/VBoxContainer2/Label_EnemyAttack.text = str(newAttack)
 
 func _onMonsterWeaknessChange():
-	$EnemySide/MarginContainer/GridContainer/VBoxContainer/HBoxContainer2/VBoxContainer2/Label_EnemyWeakness.text = Monster.weakness_type.keys()[current_monster.current_weakness_type]	
+	$EnemySide/MarginContainer/GridContainer/VBoxContainer/HBoxContainer2/VBoxContainer2/Label_EnemyWeakness.text = current_monster.weakness_type.keys()[current_monster.current_weakness_type]	
 
 func _usePowerup():
 	if(cur_card != null ):
@@ -117,6 +126,9 @@ func _tryDrawCard():
 func _process(delta):
 	monster_health_text.text = str(current_monster.remaining_health)
 	player_health_text.text = str(player_health)
+	player_health_bar.max_value = player_start_health
+	player_health_bar.value = player_health
+	monster_health_bar.value = current_monster.remaining_health
 	if(monster_actions.get_child_count() != 0):
 		monster_actions.get_child(0).value = 10-monster_timer.time_left
 		pass
@@ -124,11 +136,12 @@ func _process(delta):
 
 func player_take_damage(damage):
 	player_health -= damage
-	
 	if player_health <= 0:
 		victory_label.text = "Defeat"
 		_playVictoryDefeat()
 	pass
+	
+	
 func _playVictoryDefeat():
 	victory_label.visible = true
 	victory_label.modulate.a = 0

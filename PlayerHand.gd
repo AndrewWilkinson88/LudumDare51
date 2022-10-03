@@ -2,23 +2,23 @@ extends HBoxContainer
 
 class_name PlayerHand
 
+var card
 var cards:Array
 
+func _init():
+	card = load("res://Card.tscn")
+	
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	cards = []
 	pass # Replace with function body.
 
 func addCard(cardDef, battleScene):	
-	var card = Card.new(cardDef)
-	card.connect("play_card", battleScene ,"_on_card_clicked")
-	
-	card.set_position(Vector2(cards.size() * 120 + 60, 100))
-	card.set_rotation( - PI / 16.0 + cards.size() * (PI / 32.0))
-	
-	add_child(card)
-	
-	cards.append(card)
+	var new_card = card.instance()
+	new_card.init(cardDef)
+	new_card.connect("play_card", battleScene ,"_on_card_clicked")
+	add_child(new_card)
+	cards.append(new_card)
 	pass
 
 func removeCard(card, battleScene):
@@ -33,8 +33,9 @@ func removeCard(card, battleScene):
 
 func respace():
 	for i in cards.size():
-		cards[i].set_position(Vector2(i * 120 + 60, 100))
-		cards[i].set_rotation( - PI / 16.0 + i * (PI / 32.0))
+		#cards[i].set_position(Vector2(i * 120 + 60, 100))
+		#cards[i].set_rotation( - PI / 16.0 + i * (PI / 32.0))
+		pass
 	pass
 
 func cardCount():
