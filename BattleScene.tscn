@@ -27,7 +27,7 @@ font_data = ExtResource( 10 )
 size = 128
 font_data = ExtResource( 10 )
 
-[node name="BattleSceneNew" type="Node"]
+[node name="BattleScene" type="Node"]
 script = ExtResource( 3 )
 monster_scene = ExtResource( 2 )
 monster_action = ExtResource( 1 )
