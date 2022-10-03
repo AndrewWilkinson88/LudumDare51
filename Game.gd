@@ -109,16 +109,18 @@ func _handleBattleEnded(playerHealth:int):
 	_curPlayerHealth = playerHealth
 	_curBattle.disconnect("battle_ended", self, "_handleBattleEnded")	
 	if _curPlayerHealth <= 0:
-		remove_child(_curBattle)
-		var defeatScreenDef = load("res://DefeatScreen.tscn")
-		var defeatScreen = defeatScreenDef.instance()
-		add_child(defeatScreen)
+		get_tree().change_scene("res://DefeatScreen.tscn")
+#		remove_child(_curBattle)
+#		var defeatScreenDef = load("res://DefeatScreen.tscn")
+#		var defeatScreen = defeatScreenDef.instance()
+#		add_child(defeatScreen)
 	elif _curEncounterLevel < NUM_ENCOUNTERS-1:
 		_curEncounterLevel += 1
 		#_loadNextBattle()
 		_showShop()
 	else:
-		remove_child(_curBattle)
-		var victoryScreenDef = load("res://VictoryScreen.tscn")
-		var victoryScreen = victoryScreenDef.instance()
-		add_child(victoryScreen)
+		get_tree().change_scene("res://VictoryScreen.tscn")
+#		remove_child(_curBattle)
+#		var victoryScreenDef = load("res://VictoryScreen.tscn")
+#		var victoryScreen = victoryScreenDef.instance()
+#		add_child(victoryScreen)

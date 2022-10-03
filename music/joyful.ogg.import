@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/joyful.ogg-31bbaf346306b2eca3bd860e5d8b2520.oggstr"
+
+[deps]
+
+source_file="res://music/joyful.ogg"
+dest_files=[ "res://.import/joyful.ogg-31bbaf346306b2eca3bd860e5d8b2520.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

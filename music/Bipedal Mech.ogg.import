@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Bipedal Mech.ogg-2cbce6bf6b7800391d07e5dec72a042e.oggstr"
+
+[deps]
+
+source_file="res://music/Bipedal Mech.ogg"
+dest_files=[ "res://.import/Bipedal Mech.ogg-2cbce6bf6b7800391d07e5dec72a042e.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

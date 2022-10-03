@@ -189,14 +189,20 @@ func _checkRowCorrectness(y):
 			chainCounter +=1
 		
 		if chainCounter > 0 && (picrossField[x][y].getState() != PicrossCell.CELL_STATE.YES || x == puzzleWidth-1) :
-			if picrossRuleIndex >= rowPicrossValues[y].size() || rowPicrossValues[y][picrossRuleIndex] < chainCounter:
+			if picrossRuleIndex >= rowPicrossValues[y].size():
 				return VALIDATION_STATE.BAD
+			elif rowPicrossValues[y][picrossRuleIndex] < chainCounter:
+				for i in range( picrossRuleIndex+1, rowPicrossValues[y].size()):
+					if rowPicrossValues[y][i] >= chainCounter:
+						picrossRuleIndex = i
+						break;
+					elif i == rowPicrossValues[y].size()-1:
+						return VALIDATION_STATE.BAD
+				tooFew = true
 			elif rowPicrossValues[y][picrossRuleIndex] > chainCounter:
 				tooFew = true
-				continue
-			else:
-				chainCounter = 0;
-				picrossRuleIndex +=1
+			chainCounter = 0;
+			picrossRuleIndex +=1
 	if picrossRuleIndex != rowPicrossValues[y].size() or tooFew:
 		return VALIDATION_STATE.INCOMPLETE
 	return VALIDATION_STATE.GOOD
@@ -210,14 +216,20 @@ func _checkColumnCorrectness(x):
 			chainCounter +=1
 		
 		if chainCounter > 0 && (picrossField[x][y].getState() != PicrossCell.CELL_STATE.YES || y == puzzleHeight-1) :
-			if picrossRuleIndex >= columnPicrossValues[x].size() || columnPicrossValues[x][picrossRuleIndex] < chainCounter:
+			if picrossRuleIndex >= columnPicrossValues[x].size() :
 				return VALIDATION_STATE.BAD
+			elif  columnPicrossValues[x][picrossRuleIndex] < chainCounter:
+				for i in range( picrossRuleIndex+1, columnPicrossValues[x].size()):
+					if columnPicrossValues[x][i] >= chainCounter:
+						picrossRuleIndex = i
+						break;
+					elif i == columnPicrossValues[x].size()-1:
+						return VALIDATION_STATE.BAD
+				tooFew = true
 			elif columnPicrossValues[x][picrossRuleIndex] > chainCounter:
 				tooFew = true
-				continue
-			else:
-				chainCounter = 0;
-				picrossRuleIndex +=1
+			chainCounter = 0;
+			picrossRuleIndex +=1
 	if picrossRuleIndex != columnPicrossValues[x].size() or tooFew:
 		return VALIDATION_STATE.INCOMPLETE
 	return VALIDATION_STATE.GOOD
