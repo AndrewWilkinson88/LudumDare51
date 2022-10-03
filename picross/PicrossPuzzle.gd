@@ -4,6 +4,14 @@ class_name PicrossPuzzle
 
 signal complete_puzzle
 
+
+enum VALIDATION_STATE {INCOMPLETE , GOOD, BAD}
+
+var INCOMPLETE_COLOR = Color(1,1,1)
+var GOOD_COLOR = Color(.6,1,0)
+var BAD_COLOR = Color(.8,0,0)
+
+
 var THRESHOLD : float = .1
 var UI_OFFSET : int = 120
 
@@ -34,6 +42,8 @@ var rowCorrectness
 var columnLabels
 var rowLabels
 
+var inputAllowed = true
+
 # Called when the node enters the scene tree for the first time.
 func _init(puzzleTexture):
 	scale.x = 1.5
@@ -60,10 +70,10 @@ func createPicrossPuzzle():
 	
 	columnCorrectness = []
 	for i in puzzleWidth:
-		columnCorrectness.append(false)
+		columnCorrectness.append(VALIDATION_STATE.INCOMPLETE )
 	rowCorrectness = []
 	for i in puzzleHeight:
-		rowCorrectness.append(false)
+		rowCorrectness.append(VALIDATION_STATE.INCOMPLETE)
 	
 	var c : Color
 	var chainCounter :int  = 0
@@ -141,7 +151,7 @@ func _generatePicrossText():
 		
 		if columnPicrossValues[x].size() == 0:
 			label.text += "-"
-			columnCorrectness[x] = true;
+			columnCorrectness[x] = VALIDATION_STATE.GOOD;
 		
 		for y in columnPicrossValues[x].size():
 			label.text += str(columnPicrossValues[x][y]) 
@@ -171,6 +181,7 @@ func _generatePicrossText():
 	pass
 
 func _checkRowCorrectness(y):
+	var tooFew = false
 	var chainCounter : int  = 0
 	var picrossRuleIndex : int = 0
 	for x in puzzleWidth:
@@ -178,16 +189,20 @@ func _checkRowCorrectness(y):
 			chainCounter +=1
 		
 		if chainCounter > 0 && (picrossField[x][y].getState() != PicrossCell.CELL_STATE.YES || x == puzzleWidth-1) :
-			if picrossRuleIndex >= rowPicrossValues[y].size() || rowPicrossValues[y][picrossRuleIndex] != chainCounter:
-				return false
+			if picrossRuleIndex >= rowPicrossValues[y].size() || rowPicrossValues[y][picrossRuleIndex] < chainCounter:
+				return VALIDATION_STATE.BAD
+			elif rowPicrossValues[y][picrossRuleIndex] > chainCounter:
+				tooFew = true
+				continue
 			else:
 				chainCounter = 0;
 				picrossRuleIndex +=1
-	if picrossRuleIndex != rowPicrossValues[y].size():
-		return false
-	return true
+	if picrossRuleIndex != rowPicrossValues[y].size() or tooFew:
+		return VALIDATION_STATE.INCOMPLETE
+	return VALIDATION_STATE.GOOD
 	
 func _checkColumnCorrectness(x):
+	var tooFew = false
 	var chainCounter : int  = 0
 	var picrossRuleIndex : int = 0
 	for y in puzzleHeight:
@@ -195,15 +210,17 @@ func _checkColumnCorrectness(x):
 			chainCounter +=1
 		
 		if chainCounter > 0 && (picrossField[x][y].getState() != PicrossCell.CELL_STATE.YES || y == puzzleHeight-1) :
-			if picrossRuleIndex >= columnPicrossValues[x].size() || columnPicrossValues[x][picrossRuleIndex] != chainCounter:
-				return false
+			if picrossRuleIndex >= columnPicrossValues[x].size() || columnPicrossValues[x][picrossRuleIndex] < chainCounter:
+				return VALIDATION_STATE.BAD
+			elif columnPicrossValues[x][picrossRuleIndex] > chainCounter:
+				tooFew = true
+				continue
 			else:
 				chainCounter = 0;
 				picrossRuleIndex +=1
-	if picrossRuleIndex != columnPicrossValues[x].size():
-		#print("picross rule index : " + str(picrossRuleIndex) + "   column size : " + str(columnPicrossValues[x].size()))
-		return false
-	return true
+	if picrossRuleIndex != columnPicrossValues[x].size() or tooFew:
+		return VALIDATION_STATE.INCOMPLETE
+	return VALIDATION_STATE.GOOD
 
 
 ### INPUT HANDLING!  ############################
@@ -247,27 +264,31 @@ func _checkCorrectness(x, y):
 	var prevRowCorrectness = rowCorrectness[y]
 	rowCorrectness[y] =  _checkRowCorrectness(y)
 	
-	if !prevRowCorrectness and  rowCorrectness[y] :		
-		rowLabels[y].add_color_override("font_color", Color(0,.8,0))
-	elif prevRowCorrectness and  !rowCorrectness[y] :
-		rowLabels[y].add_color_override("font_color", Color(1,1,1))
+	if rowCorrectness[y] == VALIDATION_STATE.GOOD:		
+		rowLabels[y].add_color_override("font_color", GOOD_COLOR)
+	elif rowCorrectness[y]  == VALIDATION_STATE.INCOMPLETE:
+		rowLabels[y].add_color_override("font_color", INCOMPLETE_COLOR)
+	else :
+		rowLabels[y].add_color_override("font_color", BAD_COLOR)
 	
-	if !prevColumnCorrectness and  columnCorrectness[x] :
-		columnLabels[x].add_color_override("font_color", Color(0,.8,0))
-	elif prevColumnCorrectness and !columnCorrectness[x] :
-		columnLabels[x].add_color_override("font_color", Color(1,1,1))
+	if columnCorrectness[x]  == VALIDATION_STATE.GOOD:
+		columnLabels[x].add_color_override("font_color", GOOD_COLOR)
+	elif columnCorrectness[x] == VALIDATION_STATE.INCOMPLETE:
+		columnLabels[x].add_color_override("font_color", INCOMPLETE_COLOR)
+	else :
+		columnLabels[x].add_color_override("font_color", BAD_COLOR)
 	
-	if(( !prevRowCorrectness or !prevColumnCorrectness) and columnCorrectness[x] and rowCorrectness[y]):
+	if(columnCorrectness[x] == VALIDATION_STATE.GOOD and rowCorrectness[y] == VALIDATION_STATE.GOOD):
 		if(_checkFullCorrectness()):
 			_win()
 	pass
 	
 func _checkFullCorrectness():
 	for c in columnCorrectness :
-		if !c:
+		if c != VALIDATION_STATE.GOOD:
 			return false
 	for r in rowCorrectness :
-		if !r:
+		if r != VALIDATION_STATE.GOOD:
 			return false
 	return true
 
@@ -277,3 +298,31 @@ func _checkFullCorrectness():
 func _win():
 	emit_signal("complete_puzzle")
 	pass
+
+func fadeOut(duration = .25, target = null, callback = null, args = []):
+	var tween = create_tween().set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
+	for x in puzzleWidth:
+		for y in puzzleHeight:
+			picrossField[x][y].fadeOut(duration, null, null, tween)
+			
+	for c in columnLabels:
+		tween.parallel().tween_property(c, "modulate", Color(c.modulate.r,c.modulate.g,c.modulate.b,0), duration)
+	for c in rowLabels:
+		tween.parallel().tween_property(c, "modulate", Color(c.modulate.r,c.modulate.g,c.modulate.b,0), duration)
+	
+	if target != null && callback != null:
+		tween.tween_callback(target, callback, args)
+			
+func fadeIn(duration = .25, target = null, callback = null, args = []):
+	var tween = create_tween().set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
+	for x in puzzleWidth:
+		for y in puzzleHeight:
+			picrossField[x][y].fadeIn(duration, null, null, tween)
+			
+	for c in columnLabels:
+		tween.parallel().tween_property(c, "modulate", Color(c.modulate.r,c.modulate.g,c.modulate.b,1), duration)
+	for c in rowLabels:
+		tween.parallel().tween_property(c, "modulate", Color(c.modulate.r,c.modulate.g,c.modulate.b,1), duration)
+			
+	if target != null && callback != null:
+		tween.tween_callback(target, callback, args)

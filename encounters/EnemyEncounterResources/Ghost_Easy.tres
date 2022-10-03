@@ -10,4 +10,4 @@ health = 25
 attack = 3
 levels = [ 0 ]
 enemy = ExtResource( 2 )
-allowed_weaknesses = [ 3 ]
+allowed_weaknesses = [ 3, 2 ]

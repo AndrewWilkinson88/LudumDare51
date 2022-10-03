@@ -63,10 +63,10 @@ var mouseDown = false
 func _input(event):
 	if  (event is InputEventMouseButton and event.button_index == BUTTON_LEFT):
 		if(event.pressed and _cardBorder.get_rect().has_point(_cardBorder.to_local(event.position))):	
-			print("mouse down!")
+			#print("mouse down!")
 			mouseDown = true;
 		elif ( !event.pressed and _cardBorder.get_rect().has_point(_cardBorder.to_local(event.position))):
-			print("mouse up!")
+			#print("mouse up!")
 			mouseDown = false;
 			emit_signal("play_card", self)
 		else :

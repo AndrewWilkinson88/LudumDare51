@@ -1,12 +1,17 @@
 extends Sprite
+
+class_name Monster 
+
 signal monster_attack
 signal monster_spawn
 signal monster_queue_change
+signal monster_attack_change
+signal monster_weakness_change
 
 signal monster_death
 
 enum action_type {ACTION_ATTACK, ACTION_IDLE, ACTION_POWERUP, ACTION_CHANGE_WEAKNESS}
-enum weakness_type {WEAKNESS_FIRE, WEAKNESS_AIR, WEAKNESS_WATER, WEAKNESS_LIGHT}
+enum weakness_type {FIRE, AIR, WATER, LIGHT}
 
 var action_queue = []
 
@@ -32,7 +37,8 @@ func init(encounterDef:Encounter):
 		weaknessPool.append(weakness)
 	texture = encounterDef.enemy
 	current_action = action_type.ACTION_IDLE
-	current_weakness_type = weaknessPool[randi() % weaknessPool.size()]
+	_pickWeakness()
+	
 	
 	$MonsterActionTimer.start()
 	action_queue.push_back(action_type.ACTION_IDLE)
@@ -40,7 +46,19 @@ func init(encounterDef:Encounter):
 	action_queue.push_back(action_type.ACTION_CHANGE_WEAKNESS)
 	action_queue.push_back(action_type.ACTION_IDLE)
 	emit_signal("monster_queue_change", action_queue)
+
+func _pickWeakness():
+	if weaknessPool == null or weaknessPool.size() == 0:
+		return
 	
+	var i = randi() % weaknessPool.size()
+	# Return our current weakness to the pool
+	if(current_weakness_type != null):
+		weaknessPool.append(current_weakness_type)
+	current_weakness_type = weaknessPool[i]
+	# Remove the current weakness so we don't choose it again when switching
+	weaknessPool.remove(i)
+
 func add_next_action(next_action):
 	action_queue.push_back(next_action)
 	emit_signal("monster_queue_change", action_queue)
@@ -67,9 +85,12 @@ func take_monster_action():
 			emit_signal("monster_attack", current_attack_damage)
 			pass
 		action_type.ACTION_CHANGE_WEAKNESS:
+			_pickWeakness()
+			emit_signal("monster_weakness_change")
 			pass
 		action_type.ACTION_POWERUP:
 			current_attack_damage += 5
+			emit_signal("monster_attack_change", current_attack_damage)
 			pass
 			
 	if( action_counter % 4 == 0 ):

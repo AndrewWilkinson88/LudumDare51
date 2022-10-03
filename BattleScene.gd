@@ -32,6 +32,8 @@ var victory_label
 var playerDeck
 var arrow_image
 
+var isSwitchingPuzzles = false
+
 signal player_attack
 signal battle_ended
 
@@ -64,8 +66,8 @@ func init(playerDeckDef, playerHealth, playerAttackBonus, playerPowerup, encount
 	level_text = $EnemySide/MarginContainer/GridContainer/VBoxContainer/level_text
 	victory_label = $VictoryDefeatLabel
 	level_text.text = "Level " + str(encounterLevel)
-	current_monster = monster_scene.instance()
-	
+
+	current_monster = monster_scene.instance()	
 	monster_container.add_child(current_monster)
 	var sprite_rect = monster_container.get_rect()
 	self.connect("player_attack", current_monster, "take_damage")
@@ -75,8 +77,13 @@ func init(playerDeckDef, playerHealth, playerAttackBonus, playerPowerup, encount
 	current_monster.init(encounter)
 	monster_timer = current_monster.get_node("MonsterActionTimer")
 	monster_name.text = encounter.encounterName
-	current_monster.position.x = monster_container.rect_position.x + sprite_rect.size.x / 2
-	current_monster.position.y = monster_container.rect_position.y + sprite_rect.size.y / 2
+	current_monster.position.x = sprite_rect.size.x / 2
+	current_monster.position.y = sprite_rect.size.y / 2
+	
+	current_monster.connect("monster_weakness_change", self, "_onMonsterWeaknessChange")
+	_onMonsterWeaknessChange()	
+	current_monster.connect("monster_attack_change", self, "_onMonsterAttackChange")
+	_onMonsterAttackChange(encounter.attack)
 	
 	#TODO get players actual current deck
 	playerDeck = DeckInstance.new(playerDeckDef)
@@ -90,6 +97,12 @@ func init(playerDeckDef, playerHealth, playerAttackBonus, playerPowerup, encount
 	timer.connect("timeout",self,"_tryDrawCard") 
 	timer.start()
 	pass 
+
+func _onMonsterAttackChange(newAttack):
+	$EnemySide/MarginContainer/GridContainer/VBoxContainer/HBoxContainer2/VBoxContainer2/Label_EnemyAttack.text = str(newAttack)
+
+func _onMonsterWeaknessChange():
+	$EnemySide/MarginContainer/GridContainer/VBoxContainer/HBoxContainer2/VBoxContainer2/Label_EnemyWeakness.text = Monster.weakness_type.keys()[current_monster.current_weakness_type]	
 
 func _usePowerup():
 	if(cur_card != null ):
@@ -157,25 +170,45 @@ func update_monster_queue(action_queue):
 	pass
 
 func _on_card_clicked(card):
+	if isSwitchingPuzzles or card == cur_card:
+		return
+	
+	isSwitchingPuzzles = true;
 	if cur_card != null :
 		var oldPuzzle = cur_card.getPuzzle()
-		picross_container.remove_child(oldPuzzle)
+		oldPuzzle.fadeOut(.25, self, "_loadNewPuzzle", [oldPuzzle])
 		oldPuzzle.disconnect("complete_puzzle", self, "_on_picross_complete")
-	cur_card = card
-	var puzzle = card.getPuzzle()
-	picross_container.add_child(puzzle)
-	puzzle.connect("complete_puzzle", self, "_on_picross_complete")
+		cur_card = card
+	else :
+		cur_card = card
+		_loadNewPuzzle()
 	pass
+
+func _loadNewPuzzle(oldPuzzle = null):
+	if(oldPuzzle != null):
+		_remove_puzzle(oldPuzzle)
+	var puzzle = cur_card.getPuzzle()
+	picross_container.add_child(puzzle)
+	puzzle.fadeIn(.25, self, "_transitionComplete")
+	puzzle.connect("complete_puzzle", self, "_on_picross_complete")
+
+func _transitionComplete():
+	isSwitchingPuzzles = false;
 
 func _on_picross_complete():
 	if cur_card.getCardDef() is AttackCardDef:
 		_animateAttack(cur_card)
-	picross_container.remove_child( cur_card.getPuzzle())
+	
+	cur_card.getPuzzle().fadeOut(.25, self, "_remove_puzzle", [cur_card.getPuzzle()])
+	
 	cur_card.getPuzzle().disconnect("complete_puzzle", self, "_on_picross_complete")
 	player_hand_container.removeCard(cur_card, self);
 	playerDeck.discard(cur_card.getCardDef())
 	cur_card = null
 	pass
+	
+func _remove_puzzle(puzzle):	
+	picross_container.remove_child(puzzle)
 
 func _animateAttack(cur_card):
 	var sprite = Sprite.new()
