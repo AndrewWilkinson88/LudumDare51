@@ -13,6 +13,8 @@ var player_hand
 var current_monster: Sprite
 var monster_container
 var player_health_text
+var _playerAttackBonus
+var _playerPowerup
 var monster_health_text
 var monster_actions
 var level_text
@@ -33,9 +35,19 @@ var arrow_image
 signal player_attack
 signal battle_ended
 
-func init(playerDeckDef, playerHealth, encounter, encounterLevel):
+func init(playerDeckDef, playerHealth, playerAttackBonus, playerPowerup, encounter, encounterLevel):
 	player_health = playerHealth
+	_playerAttackBonus = playerAttackBonus
+	_playerPowerup = playerPowerup
 	
+	if playerPowerup:
+		$PowerUp.disabled = false
+		$PowerUp.connect("pressed", self, "_usePowerup")
+
+	if playerAttackBonus > 0:
+		$PlayerSide/PlayerMargins/PlayerLayout/GridContainer/VBoxContainer/HBoxContainer2/Label_PlayerAttack.text = str(playerAttackBonus)
+	else :
+		$PlayerSide/PlayerMargins/PlayerLayout/GridContainer/VBoxContainer/HBoxContainer2.visible = false
 
 	#Monster Stuff
 	monster_container = $EnemySide/MarginContainer/GridContainer/MonsterContainer
@@ -78,6 +90,11 @@ func init(playerDeckDef, playerHealth, encounter, encounterLevel):
 	timer.connect("timeout",self,"_tryDrawCard") 
 	timer.start()
 	pass 
+
+func _usePowerup():
+	if(cur_card != null ):
+		cur_card.getPuzzle()._win()
+		$PowerUp.disabled = true
 
 func _tryDrawCard():
 	if player_hand_container.cardCount() < 5:
@@ -137,7 +154,6 @@ func update_monster_queue(action_queue):
 		arrow.texture = load("res://UI_Art/Action_Arrow.png")
 		arrow.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		monster_actions.add_child(arrow)
-		
 	pass
 
 func _on_card_clicked(card):
@@ -180,7 +196,7 @@ func _removeSprite(sprite):
 	remove_child(sprite)
 
 func _triggerDamage(cur_card):
-	emit_signal("player_attack", cur_card.getCardDef().attackType,  cur_card.getCardDef().damage)
+	emit_signal("player_attack", cur_card.getCardDef().attackType,  cur_card.getCardDef().damage + _playerAttackBonus)
 
 func _input(event):
 	if event is InputEventKey and event.pressed and event.scancode == KEY_ENTER:

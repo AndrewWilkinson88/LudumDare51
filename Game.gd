@@ -10,10 +10,14 @@ var encounters:Array
 var _curDeckDef:DeckDef
 
 var _battleScene:Resource
+var _shopScene:Resource
 
 var _curBattle
+var _curShop
 var _curEncounterLevel:int
 var _curPlayerHealth:int
+var _playerAttackBonus:int
+var _playerPowerup:bool
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -24,6 +28,7 @@ func _ready():
 	_setupDefaultDeck()
 	
 	_battleScene = load("res://BattleScene.tscn")
+	_shopScene = load("res://Shop.tscn")
 	_loadNextBattle()
 	
 	pass # Replace with function body.
@@ -52,23 +57,65 @@ func _setupDefaultDeck():
 
 func _loadNextBattle():
 	_curBattle = _battleScene.instance()
-	add_child(_curBattle)
-	_curBattle.init(_curDeckDef, _curPlayerHealth, encounters[_curEncounterLevel], _curEncounterLevel+1)
-	_curBattle.connect("battle_ended", self, "_handleBattleEnded")	
+	add_child(_curBattle)	
+	_curBattle.init(_curDeckDef, _curPlayerHealth, _playerAttackBonus, _playerPowerup, encounters[_curEncounterLevel], _curEncounterLevel+1)
+	_curBattle.connect("battle_ended", self, "_handleBattleEnded")
+	
+func _showShop():
+	_curShop = _shopScene.instance()
+	var tweenObj = _curShop.get_node("ShopContainer")
+	tweenObj.position.y = -900
+	add_child(_curShop);
+	var tween = create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.tween_property(tweenObj, "global_position", Vector2(0,0), 1)
+	tween.tween_callback(self, "_removeBattleScene")
+
+func _removeBattleScene():
+	_curShop.get_node("ShopContainer/items/health").connect("pressed", self, "_healthPressed")
+	_curShop.get_node("ShopContainer/items/attack").connect("pressed", self, "_attackPressed")
+	_curShop.get_node("ShopContainer/items/powerup").connect("pressed", self, "_powerupPressed")
+	remove_child(_curBattle)
+
+func _healthPressed():
+	_removeShopSignalsAndTween()
+	_curPlayerHealth += 50
+	_loadNextBattle()
+
+func _attackPressed():
+	_removeShopSignalsAndTween()
+	_playerAttackBonus += 5
+	_loadNextBattle()
+	
+func _powerupPressed():
+	_removeShopSignalsAndTween()
+	_playerPowerup = true
+	_loadNextBattle()
+
+func _removeShopSignalsAndTween():
+	_curShop.get_node("ShopContainer/items/health").disconnect("pressed", self, "_healthPressed")
+	_curShop.get_node("ShopContainer/items/attack").disconnect("pressed", self, "_attackPressed")
+	_curShop.get_node("ShopContainer/items/powerup").disconnect("pressed", self, "_powerupPressed")
+	var tweenObj = _curShop.get_node("ShopContainer")
+	var tween = create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.tween_property(tweenObj, "global_position", Vector2(0,-900), 1)
+	tween.tween_callback(self, "_removeShopScene")
+
+func _removeShopScene():
+	remove_child(_curShop)
 
 func _handleBattleEnded(playerHealth:int):
+	_playerPowerup = false
 	_curPlayerHealth = playerHealth
-	_curBattle.disconnect("battle_ended", self, "_handleBattleEnded")
-	remove_child(_curBattle)
+	_curBattle.disconnect("battle_ended", self, "_handleBattleEnded")	
 	if _curPlayerHealth <= 0:
-		#TODO game over
+		remove_child(_curBattle)
 		print("GAME OVER")
 	elif _curEncounterLevel < NUM_ENCOUNTERS-1:
 		_curEncounterLevel += 1
-		_loadNextBattle()
+		#_loadNextBattle()
+		_showShop()
 	else:
-		#TODO make victory screen
-		#print("YOU WIN!")
+		remove_child(_curBattle)
 		var victoryScreenDef = load("res://VictoryScreen.tscn")
 		var victoryScreen = victoryScreenDef.instance()
 		add_child(victoryScreen)
