@@ -75,8 +75,8 @@ func init(playerDeckDef, playerHealth, playerAttackBonus, playerPowerup, encount
 	current_monster.init(encounter)
 	monster_timer = current_monster.get_node("MonsterActionTimer")
 	monster_name.text = encounter.encounterName
-	current_monster.position.x = monster_container.rect_position.x + sprite_rect.size.x / 2
-	current_monster.position.y = monster_container.rect_position.y + sprite_rect.size.y / 2
+	current_monster.position.x = sprite_rect.size.x / 2
+	current_monster.position.y = sprite_rect.size.y / 2
 	
 	current_monster.connect("monster_weakness_change", self, "_onMonsterWeaknessChange")
 	_onMonsterWeaknessChange()	

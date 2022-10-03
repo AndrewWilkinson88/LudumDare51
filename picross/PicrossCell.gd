@@ -23,7 +23,9 @@ func _init(cellTexture, yesTexture, noTexture):
 	add_child(cell)
 	
 	overlay = Sprite.new()
-	overlay.centered = false
+	overlay.position.x += 16
+	overlay.position.y += 16
+	#overlay.centered = false
 	overlay.texture = null
 	add_child(overlay)
 	pass
@@ -35,8 +37,23 @@ func setState(cellState):
 	if(curState == cellState):
 		return false
 	curState = cellState
-	setOverlay(curState)
+	animateOverlay(cellState)
+	#setOverlay(curState)
 	return true
+
+func animateOverlay(cellState):
+	var tween = create_tween().set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
+#	if(overlay.texture != null):
+#		tween.tween_property(overlay, "scale", Vector2(2,2), .25)
+#		tween.parallel().tween_property(overlay, "modulate", Color(1,1,1,0), .25)
+#		tween.tween_callback(self, "setOverlay", [cellState])
+#	else:
+	overlay.scale = Vector2(.1,.1)
+	overlay.modulate = Color(1,1,1,0)
+	setOverlay(cellState)
+	tween.tween_property(overlay, "scale", Vector2(1,1), .25)
+	tween.parallel().tween_property(overlay, "modulate", Color(1,1,1,1), .25)
+	
 
 func setOverlay(cellState ):
 	if(cellState == CELL_STATE.UNDEFINED):
